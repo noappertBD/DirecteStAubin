@@ -57,9 +57,5 @@ def homework():
         homeworkResponse = getHomework(session["token"], session["userId"], None)
         session["token"] = homeworkResponse.json().get("token")
         return jsonify({"status": 200, "data": homeworkResponse.json()})
-        
-    
-
-
 
 app.run(debug=True, port=5000, host='0.0.0.0', threaded=True)
