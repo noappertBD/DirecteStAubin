@@ -17,7 +17,7 @@ headers = {
 }
 
 
-def makePost(url, data, params={'v': '4.24.3'}, headers=headers):
+def makePost(url, data, params={'v': '4.27.4'}, headers=headers):
     params = params
     data = 'data=' + json.dumps(data)
     return requests.post(url, params=params, headers=headers, data=data)
@@ -28,7 +28,7 @@ def getLoginInfo(username, password):
     return makePost('https://api.ecoledirecte.com/v3/login.awp', data)
 
 def getHomework(token, userId, date):
-    params = {'verbe': "get", 'v': '4.24.3'}
+    params = {'verbe': "get", 'v': '4.27.4'}
     newHeaders = headers.copy()
     newHeaders['x-token'] = token
     if(date == None):
@@ -36,4 +36,13 @@ def getHomework(token, userId, date):
     else:
         return makePost('https://api.ecoledirecte.com/v3/Eleves/{}/{}-{}-{}/cahierdetexte.awp'.format(userId, date(datetime.date.year)), {}, params, newHeaders)
 
-#def getSchedule(token, userId, date)
+def getSchedule(token, userId, date):
+    params = {'verbe': "get", 'v': '4.27.4'}
+    data = {
+        "dateDebut": "2023-03-06",
+        "dateFin": "2023-03-12",
+        "avecTrous": False
+    }
+    newHeaders = headers.copy()
+    newHeaders['x-token'] = token
+    return makePost('https://api.ecoledirecte.com/v3/Eleves/{}/emploidutemps.awp'.format(userId), data, params, newHeaders)

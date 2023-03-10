@@ -1,12 +1,12 @@
 from db import Users
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
-from edrequests import getLoginInfo, getHomework
+from edrequests import getLoginInfo, getHomework, getSchedule
 
-app = Flask("AfterBank")
+app = Flask("DirecteSaintAubin")
 app.config["SECRET_KEY"] = "devsecret"
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = str(request.form['username'])
@@ -38,24 +38,32 @@ def profiles():
     users = Users.select()
     return jsonify({"code": "200", "data": [user.toDict() for user in users]})
 
-@app.route('/profile/<discriminentId>', methods=['GET'])
+@app.route('/profile/<discriminentId>/', methods=['GET'])
 def profile(discriminentId):
     verify = Users.select(Users.q.discriminentId == discriminentId)
     user = []
     if verify.count() == 0:
         return jsonify({"code": "401", "message": "Invalid credentials"}), 401
     else:
-        user = {"code": "200", "data": verify[0].toDict()}
+        user = {"code": "200", "data": [verify[0].toDict()]}
         return jsonify(user)
 
-@app.route('/homeworks')
+@app.route('/homeworks/')
 def homework():
     if("userId" not in session):
         return redirect(url_for("login"))
-    
     else:
         homeworkResponse = getHomework(session["token"], session["userId"], None)
         session["token"] = homeworkResponse.json().get("token")
         return jsonify({"status": 200, "data": homeworkResponse.json()})
+
+@app.route('/schedule/')
+def schedule():
+    if("userId" not in session):
+        return redirect(url_for("login"))
+    else:
+        scheduleResponse = getSchedule(session["token"], session["userId"], None)
+        session["token"] = scheduleResponse.json().get("token")
+        return jsonify({"status": 200, "data": scheduleResponse.json()})
 
 app.run(debug=True, port=5000, host='0.0.0.0', threaded=True)
