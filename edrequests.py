@@ -39,11 +39,10 @@ def getHomework(token, userId, date):
 def getSchedule(token, userId, date):
     params = {'verbe': "get", 'v': '4.27.4'}
     data = {
-        "dateDebut": "2023-03-11",
-        "dateFin": "2023-03-12",
+        "dateDebut": "2023-03-10",
+        "dateFin": "2023-03-10",
         "avecTrous": False
     }
-    # Peux-tu relancer stp ?
     newHeaders = headers.copy()
     newHeaders['x-token'] = token
     return makePost('https://api.ecoledirecte.com/v3/E/{}/emploidutemps.awp'.format(userId), data, params, newHeaders)
