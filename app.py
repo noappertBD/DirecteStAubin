@@ -63,7 +63,9 @@ def schedule():
         return redirect(url_for("login"))
     else:
         scheduleResponse = getSchedule(session["token"], session["userId"], None)
-        session["token"] = scheduleResponse.json().get("token")
-        return jsonify({"status": 200, "data": scheduleResponse.json()})
+        session["token"] = scheduleResponse["token"]
+        return jsonify({"status": 200, "data": {k : [value.toJSON() for value in v] for k, v in scheduleResponse["data"].items()}})
 
 app.run(debug=True, port=5000, host='0.0.0.0', threaded=True)
+
+# Peux-tu redem ?

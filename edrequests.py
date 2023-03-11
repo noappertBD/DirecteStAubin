@@ -1,6 +1,33 @@
 import requests, json
 import urllib.parse
-import datetime
+import datetime, time
+
+
+class Course:
+    name: str = ""
+    teacher: str = ""
+    room: str = ""
+    start: datetime.time = None
+    end: datetime.time = None
+    color: str = ""
+
+    def __init__(self, name, teacher, room, start, end, color):
+        self.name = name
+        self.teacher = teacher
+        self.room = room
+        self.start = start
+        self.end = end
+        self.color = color
+
+    def toJSON(self):
+        return {
+            "name": self.name,
+            "teacher": self.teacher,
+            "room": self.room,
+            "start": self.start,
+            "end": self.end,
+            "color": self.color
+        }
 
 headers = {
     'authority': 'api.ecoledirecte.com',
@@ -38,11 +65,36 @@ def getHomework(token, userId, date):
 
 def getSchedule(token, userId, date):
     params = {'verbe': "get", 'v': '4.27.4'}
+    start_date = date
+    end_date = date
+    if(date == None):
+        start_date = datetime.date.today() - datetime.timedelta(days=datetime.date.today().weekday())
+        end_date = start_date + datetime.timedelta(days=6)
+
     data = {
-        "dateDebut": "2023-03-10",
-        "dateFin": "2023-03-10",
+        "dateDebut": start_date.strftime("%Y-%m-%d"),
+        "dateFin": end_date.strftime("%Y-%m-%d"),
         "avecTrous": False
     }
+
     newHeaders = headers.copy()
     newHeaders['x-token'] = token
-    return makePost('https://api.ecoledirecte.com/v3/E/{}/emploidutemps.awp'.format(userId), data, params, newHeaders)
+    result = makePost('https://api.ecoledirecte.com/v3/E/{}/emploidutemps.awp'.format(userId), data, params, newHeaders).json()
+    token = result["token"]
+    result = result["data"]
+    courses = {}
+    for data in result:
+        name = data["matiere"]
+        teacher = data["prof"]
+        room = data["salle"]
+        start = datetime.datetime.strptime(data["start_date"], "%Y-%m-%d %H:%M")
+        end = datetime.datetime.strptime(data["end_date"], "%Y-%m-%d %H:%M")
+        color = data["color"]
+    
+        start_minutes = (start.hour*60 + start.minute) - 495
+        end_minutes = (end.hour*60 + end.minute) - 495
+        day = start.strftime("%Y-%m-%d")
+        if(not day in courses):
+            courses[day] = []
+        courses[day].append(Course(name, teacher, room, start_minutes, end_minutes, color))
+    return {"token": token, "data":courses}
