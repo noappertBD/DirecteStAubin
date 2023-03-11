@@ -37,29 +37,6 @@ def getHomework(token, userId, date):
         return makePost('https://api.ecoledirecte.com/v3/Eleves/{}/{}-{}-{}/cahierdetexte.awp'.format(userId, date(datetime.date.year)), {}, params, newHeaders)
 
 def getSchedule(token, userId, date):
-    import requests
-
-    headersa = {
-        'authority': 'api.ecoledirecte.com',
-        'accept': '*/*',
-        'accept-language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
-        'access-control-request-headers': 'x-token',
-        'access-control-request-method': 'POST',
-        'origin': 'https://www.ecoledirecte.com',
-        'referer': 'https://www.ecoledirecte.com/',
-        'sec-fetch-dest': 'empty',
-        'sec-fetch-mode': 'cors',
-        'sec-fetch-site': 'same-site',
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.5414.120 Safari/537.36',
-    }
-
-    params = {
-        'verbe': 'get',
-        'v': '4.27.5',
-    }
-
-    response = requests.options('https://api.ecoledirecte.com/v3/E/5473/emploidutemps.awp', params=params, headers=headersa)
-    response
     params = {'verbe': "get", 'v': '4.27.4'}
     data = {
         "dateDebut": "2023-03-06",
