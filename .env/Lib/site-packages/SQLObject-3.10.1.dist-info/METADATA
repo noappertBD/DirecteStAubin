@@ -1,0 +1,152 @@
+Metadata-Version: 2.1
+Name: SQLObject
+Version: 3.10.1
+Summary: Object-Relational Manager, aka database wrapper
+Home-page: http://sqlobject.org/
+Author: Ian Bicking
+Author-email: ianb@colorstudy.com
+Maintainer: Oleg Broytman
+Maintainer-email: phd@phdru.name
+License: LGPL
+Download-URL: https://pypi.org/project/SQLObject/3.10.1/
+Project-URL: Issue tracker, https://github.com/sqlobject/sqlobject/issues
+Project-URL: Wikipedia, https://en.wikipedia.org/wiki/SQLObject
+Project-URL: Development docs, http://sqlobject.org/devel/
+Project-URL: Download, https://pypi.org/project/SQLObject/3.10.1/
+Project-URL: Github repo, https://github.com/sqlobject
+Project-URL: SourceForge project, https://sourceforge.net/projects/sqlobject/
+Project-URL: Homepage, http://sqlobject.org/
+Project-URL: Twitter, https://twitter.com/SQLObject
+Keywords: sql,orm,object-relational mapper
+Platform: Any
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Database
+Classifier: Topic :: Database :: Front-Ends
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires: FormEncode
+Requires: PyDispatcher
+Requires-Python: >=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*
+Description-Content-Type: text/x-rst
+Provides-Extra: sqlite
+Provides-Extra: py-postgresql
+Provides-Extra: pg8000
+Provides-Extra: sapdb
+Provides-Extra: pymysql
+Provides-Extra: pypyodbc
+Provides-Extra: pyodbc
+Provides-Extra: firebirdsql
+Provides-Extra: mysql
+Provides-Extra: psycopg2
+Provides-Extra: sybase
+Provides-Extra: mysql-connector
+Provides-Extra: kinterbasdb
+Provides-Extra: postgres
+Provides-Extra: oursql
+Provides-Extra: adodbapi
+Provides-Extra: supersqlite
+Provides-Extra: pymssql
+Provides-Extra: mariadb
+Provides-Extra: pygresql
+Provides-Extra: fdb
+Provides-Extra: postgresql
+Provides-Extra: odbc
+Provides-Extra: pypostgresql
+Provides-Extra: psycopg
+Provides-Extra: mysql-connector-python
+Requires-Dist: PyDispatcher (>=2.0.4)
+Requires-Dist: FormEncode (!=1.3.0,>=1.1.1); python_version == "2.7"
+Requires-Dist: FormEncode (>=1.3.1); python_version >= "3.4"
+Provides-Extra: adodbapi
+Requires-Dist: adodbapi; extra == 'adodbapi'
+Provides-Extra: fdb
+Requires-Dist: fdb; extra == 'fdb'
+Provides-Extra: firebirdsql
+Requires-Dist: firebirdsql; extra == 'firebirdsql'
+Provides-Extra: kinterbasdb
+Requires-Dist: kinterbasdb; extra == 'kinterbasdb'
+Provides-Extra: mariadb
+Requires-Dist: mariadb; extra == 'mariadb'
+Provides-Extra: mysql-connector
+Requires-Dist: mysql-connector; extra == 'mysql-connector'
+Provides-Extra: mysql-connector-python
+Requires-Dist: mysql-connector-python; extra == 'mysql-connector-python'
+Provides-Extra: mysql
+Requires-Dist: MySQL-python; (python_version=="2.7") and extra == 'mysql'
+Provides-Extra: mysql
+Requires-Dist: mysqlclient; (python_version>="3.4") and extra == 'mysql'
+Provides-Extra: odbc
+Requires-Dist: pyodbc; extra == 'odbc'
+Provides-Extra: oursql
+Requires-Dist: oursql; (python_version=="2.7") and extra == 'oursql'
+Provides-Extra: oursql
+Requires-Dist: oursql3; (python_version>="3.4") and extra == 'oursql'
+Provides-Extra: pg8000
+Requires-Dist: pg8000 (<1.13); (python_version=="2.7") and extra == 'pg8000'
+Provides-Extra: pg8000
+Requires-Dist: pg8000 (<1.12.4); (python_version=="3.4") and extra == 'pg8000'
+Provides-Extra: pg8000
+Requires-Dist: pg8000; (python_version>="3.5") and extra == 'pg8000'
+Provides-Extra: postgres
+Requires-Dist: psycopg2; extra == 'postgres'
+Provides-Extra: postgresql
+Requires-Dist: psycopg2; extra == 'postgresql'
+Provides-Extra: psycopg
+Requires-Dist: psycopg2; extra == 'psycopg'
+Provides-Extra: psycopg2
+Requires-Dist: psycopg2; extra == 'psycopg2'
+Provides-Extra: py-postgresql
+Requires-Dist: py-postgresql; extra == 'py-postgresql'
+Provides-Extra: pygresql
+Requires-Dist: pygresql; extra == 'pygresql'
+Provides-Extra: pymssql
+Requires-Dist: pymssql; extra == 'pymssql'
+Provides-Extra: pymysql
+Requires-Dist: pymysql; extra == 'pymysql'
+Provides-Extra: pyodbc
+Requires-Dist: pyodbc; extra == 'pyodbc'
+Provides-Extra: pypostgresql
+Requires-Dist: py-postgresql; extra == 'pypostgresql'
+Provides-Extra: pypyodbc
+Requires-Dist: pypyodbc; extra == 'pypyodbc'
+Provides-Extra: sapdb
+Requires-Dist: sapdb; extra == 'sapdb'
+Provides-Extra: sqlite
+Requires-Dist: pysqlite; extra == 'sqlite'
+Provides-Extra: supersqlite
+Requires-Dist: supersqlite; extra == 'supersqlite'
+Provides-Extra: sybase
+Requires-Dist: Sybase; extra == 'sybase'
+
+SQLObject is a popular *Object Relational Manager* for providing an
+object interface to your database, with tables as classes, rows as
+instances, and columns as attributes.
+
+SQLObject includes a Python-object-based query language that makes SQL
+more abstract, and provides substantial database independence for
+applications.
+
+Supports MySQL, PostgreSQL, SQLite, Firebird, Sybase, MSSQL and MaxDB (SAPDB).
+Python 2.7 or 3.4+ is required.
+
+For development see the projects at
+`SourceForge <https://sourceforge.net/projects/sqlobject/>`_
+and `GitHub <https://github.com/sqlobject>`_.
+
+.. image:: https://github.com/sqlobject/sqlobject/actions/workflows/run-tests.yaml/badge.svg?branch=github-actions
+   :target: https://github.com/sqlobject/sqlobject/actions/workflows/run-tests.yaml
+
+
