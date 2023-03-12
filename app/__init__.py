@@ -75,4 +75,4 @@ def schedule():
         session["token"] = scheduleResponse["token"]
         return jsonify({"status": 200, "data": {k : [value.toJSON() for value in v] for k, v in scheduleResponse["data"].items()}})
 
-app.run(debug=True, port=5000, host='0.0.0.0', threaded=True)
+app.run(debug=True, threaded=True)
