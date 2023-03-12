@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'DirecteSaintAubinAPI'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3480DF4A83564C67A0728BE6D7B14D2A }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D1F87FED83704CDAA0D2DB69953C333D }}
