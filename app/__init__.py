@@ -13,6 +13,7 @@ from app.edrequests import getLoginInfo, getHomework, getSchedule
 
 app = Flask("DirecteSaintAubin")
 app.config["SECRET_KEY"] = "devsecret"
+app.config['SESSION_COOKIE_SAMESITE'] = "None"
 
 
 @app.route('/login/', methods=['GET', 'POST'])
@@ -72,6 +73,7 @@ def add_header(response):
     response.headers["Access-Control-Allow-Credentials"] = "true"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+
     return response
 
 @app.route('/schedule/')
