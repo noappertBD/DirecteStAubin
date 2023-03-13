@@ -65,6 +65,11 @@ def homework():
         homeworkResponse = getHomework(session["token"], session["userId"], None)
         session["token"] = homeworkResponse.json().get("token")
         return jsonify({"status": 200, "data": homeworkResponse.json()})
+    
+@app.after_request
+def add_header(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
 
 @app.route('/schedule/')
 def schedule():
