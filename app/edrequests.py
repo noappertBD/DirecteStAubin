@@ -70,6 +70,9 @@ def getSchedule(token, userId, date):
     if(date == None):
         start_date = datetime.date.today() - datetime.timedelta(days=datetime.date.today().weekday())
         end_date = start_date + datetime.timedelta(days=6)
+    else:
+        start_date = date - datetime.timedelta(days=date.weekday())
+        end_date = start_date + datetime.timedelta(days=6)
 
     data = {
         "dateDebut": start_date.strftime("%Y-%m-%d"),

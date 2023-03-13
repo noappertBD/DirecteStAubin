@@ -80,4 +80,13 @@ def schedule():
         session["token"] = scheduleResponse["token"]
         return jsonify({"status": 200, "data": {k : [value.toJSON() for value in v] for k, v in scheduleResponse["data"].items()}})
 
+@app.route('/schedule/<date>/')
+def schedule_withdate(date):
+    if("userId" not in session):
+        return redirect(url_for("login"))
+    else:
+        scheduleResponse = getSchedule(session["token"], session["userId"], date)
+        session["token"] = scheduleResponse["token"]
+        return jsonify({"status": 200, "data": {k : [value.toJSON() for value in v] for k, v in scheduleResponse["data"].items()}})
+
 app.run(port=8000, host="0.0.0.0", threaded=True)
