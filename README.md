@@ -6,10 +6,10 @@ Le backend (API) ne rend aucune template (sauf login.html) et renvoies uniquemen
 ###### Se connecter à ED par l'API.
 > **Via cURL:**
 ```bat
-curl -X POST -d "username=<nomdutilisateur>&password=<motdepasse>" http://localhost:5000/login
+curl -X POST -d "username=[*nomdutilisateur]&password=[*motdepasse]" http://[*host]:[*port]/login
 ```  
 > **Via Powershell:**
 ```Powershell
 $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
-Invoke-WebRequest -UseBasicParsing -Uri "http://localhost:5000/login" -Method "POST" -Body "username=<nomdutilisateur>&password=<motdepasse>"
+Invoke-WebRequest -UseBasicParsing -Uri "http://[*host]:[*port]/login" -Method "POST" -Body "username=[*nomdutilisateur]&password=[*motdepasse]"
 ```
