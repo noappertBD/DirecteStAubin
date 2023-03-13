@@ -63,16 +63,15 @@ def getHomework(token, userId, date):
     else:
         return makePost('https://api.ecoledirecte.com/v3/Eleves/{}/{}-{}-{}/cahierdetexte.awp'.format(userId, date(datetime.date.year)), {}, params, newHeaders)
 
-def getSchedule(token, userId, date):
+def getSchedule(token, userId, date=None):
     params = {'verbe': "get", 'v': '4.27.4'}
-    start_date = date
-    end_date = date
     if(date == None):
-        start_date = datetime.date.today() - datetime.timedelta(days=datetime.date.today().weekday())
-        end_date = start_date + datetime.timedelta(days=6)
+        start_date = datetime.date.today()
     else:
-        start_date = date - datetime.timedelta(days=date.weekday())
-        end_date = start_date + datetime.timedelta(days=6)
+        start_date = datetime.datetime.strptime(date, "%Y-%m-%d")
+
+    start_date = start_date - datetime.timedelta(days=start_date.weekday())
+    end_date = start_date + datetime.timedelta(days=6)
 
     data = {
         "dateDebut": start_date.strftime("%Y-%m-%d"),
