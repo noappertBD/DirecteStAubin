@@ -13,7 +13,9 @@ from app.edrequests import getLoginInfo, getHomework, getSchedule
 
 app = Flask("DirecteSaintAubin")
 app.config["SECRET_KEY"] = "devsecret"
-app.config['SESSION_COOKIE_SAMESITE'] = "None"
+# Allow session cookies to be used in cross-origin requests
+app.config["SESSION_COOKIE_SAMESITE"] = "None"
+app.config["SESSION_COOKIE_SECURE"] = True
 
 
 @app.route('/login/', methods=['GET', 'POST'])
