@@ -9,13 +9,14 @@
                                                                                                      
 from app.db import Users
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
+from flask.sessions import SecureCookieSessionInterface
 from app.edrequests import getLoginInfo, getHomework, getSchedule
 
 app = Flask("DirecteSaintAubin")
 app.config["SECRET_KEY"] = "devsecret"
-# Allow session cookies to be used in cross-origin requests
-app.config["SESSION_COOKIE_SAMESITE"] = "None"
-app.config["SESSION_COOKIE_SECURE"] = True
+session_cookie = SecureCookieSessionInterface().get_signing_serializer(app)
+
+
 
 
 @app.route('/login/', methods=['GET', 'POST'])
@@ -76,6 +77,9 @@ def add_header(response):
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
 
+    # If "TOKEN" is in the request, put the "session" cookie
+    if "TOKEN" in request.headers:
+        response.set_cookie("session", value=request.headers["TOKEN"])
     return response
 
 @app.route('/schedule/')
