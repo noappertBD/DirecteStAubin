@@ -70,7 +70,7 @@ def homework():
 def add_header(response):
     response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin")
     response.headers["Access-Control-Allow-Credentials"] = "true"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, TOKEN, token"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
     return response
 
