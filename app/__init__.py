@@ -14,6 +14,11 @@ from app.edrequests import getLoginInfo, getHomework, getSchedule
 app = Flask("DirecteSaintAubin")
 app.config["SECRET_KEY"] = "devsecret"
 
+app.config.update(
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_SAMESITE='None'
+)
+
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
