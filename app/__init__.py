@@ -8,7 +8,7 @@
                                                                                                                                                                                                                                                                                                                          
                                                                                                      
 from app.db import Users
-from flask import Flask, render_template, jsonify, request, session, redirect, url_for
+from flask import Flask, render_template, jsonify, request, session, redirect, url_for, g
 from flask.sessions import SecureCookieSessionInterface
 from app.edrequests import getLoginInfo, getHomework, getSchedule
 import uuid
@@ -103,18 +103,23 @@ def add_header(response):
     response.headers["Access-Control-Allow-Credentials"] = "true"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    response.headers["TOKEN"] = g.token
     return response
+
+
 @app.before_request
 def before_request():
     if "TOKEN" in request.headers:
         token = request.headers["TOKEN"]
         if token in sessions:
             sessions[token] = {}
+            g.token = token
             return
     else:
         token = str(uuid.uuid4())
         sessions[token] = {}
-        request.headers["TOKEN"] = token
+        g.token = token
+
 
 
 
