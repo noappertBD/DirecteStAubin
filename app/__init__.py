@@ -14,11 +14,6 @@ from app.edrequests import getLoginInfo, getHomework, getSchedule
 app = Flask("DirecteSaintAubin")
 app.config["SECRET_KEY"] = "devsecret"
 
-app.config.update(
-    SESSION_COOKIE_SECURE=True,
-    SESSION_COOKIE_SAMESITE='None'
-)
-
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
@@ -32,7 +27,13 @@ def login():
             loginId = account.get("idLogin")
             firstName = account.get("prenom")
             lastName = account.get("nom")
-            classLevel = account.get("profile").get("classe").get("code")
+            if("classe" in account.get("profile")):
+                classLevel = account.get("profile").get("classe").get("code")
+                session["accountType"] = "Student"
+            else:
+                classLevel = "Teacher"
+                session["accountType"] = "Teacher"
+
             discriminentId = str(id)+str(loginId)
             verify = Users.selectBy(discriminentId=discriminentId)
             if verify.count() == 0:
@@ -84,7 +85,7 @@ def schedule():
     if("userId" not in session):
         return redirect(url_for("login"))
     else:
-        scheduleResponse = getSchedule(session["token"], session["userId"], None)
+        scheduleResponse = getSchedule(session["token"], session["userId"], ("E" if session["accountType"] == "Student" else "P"), None)
         session["token"] = scheduleResponse["token"]
         return jsonify({"status": 200, "data": {k : [value.toJSON() for value in v] for k, v in scheduleResponse["data"].items()}})
 
@@ -93,7 +94,8 @@ def schedule_withdate(date):
     if("userId" not in session):
         return redirect(url_for("login"))
     else:
-        scheduleResponse = getSchedule(session["token"], session["userId"], date)
+
+        scheduleResponse = getSchedule(session["token"], session["userId"], ("E" if session["accountType"] == "Student" else "P"), date)
         session["token"] = scheduleResponse["token"]
         return jsonify({"status": 200, "data": {k : [value.toJSON() for value in v] for k, v in scheduleResponse["data"].items()}})
 
