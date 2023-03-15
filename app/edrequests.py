@@ -63,7 +63,7 @@ def getHomework(token, userId, date):
     else:
         return makePost('https://api.ecoledirecte.com/v3/Eleves/{}/{}-{}-{}/cahierdetexte.awp'.format(userId, date(datetime.date.year)), {}, params, newHeaders)
 
-def getSchedule(token, userId, date=None):
+def getSchedule(token, userId, accountType, date=None):
     params = {'verbe': "get", 'v': '4.27.4'}
     if(date == None):
         start_date = datetime.date.today()
@@ -81,7 +81,8 @@ def getSchedule(token, userId, date=None):
 
     newHeaders = headers.copy()
     newHeaders['x-token'] = token
-    result = makePost('https://api.ecoledirecte.com/v3/E/{}/emploidutemps.awp'.format(userId), data, params, newHeaders).json()
+    print(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/emploidutemps.awp')
+    result = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/emploidutemps.awp', data, params, newHeaders).json()
     token = result["token"]
     result = result["data"]
     courses = {}
