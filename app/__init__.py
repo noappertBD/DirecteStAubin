@@ -9,7 +9,7 @@
                                                                                                      
 from app.db import Users
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
-from app.edrequests import getLoginInfo, getHomework, getSchedule
+from app.edrequests import getLoginInfo, getHomework, getSchedule, getGrades
 
 app = Flask("DirecteSaintAubin")
 app.config["SECRET_KEY"] = "devsecret"
@@ -71,7 +71,7 @@ def profile(discriminentId):
 @app.route('/homeworks/')
 def homework():
     if("userId" not in session):
-        return redirect(url_for("login"))
+        return jsonify({"status": 401, "data": "Not logged in"}), 401
     else:
         homeworkResponse = getHomework(session["token"], session["userId"], None)
         session["token"] = homeworkResponse.json().get("token")
@@ -88,7 +88,7 @@ def add_header(response):
 @app.route('/schedule/')
 def schedule():
     if("userId" not in session):
-        return redirect(url_for("login"))
+        return jsonify({"status": 401, "data": "Not logged in"}), 401
     else:
         scheduleResponse = getSchedule(session["token"], session["userId"], ("E" if session["accountType"] == "Student" else "P"), None)
         session["token"] = scheduleResponse["token"]
@@ -97,11 +97,20 @@ def schedule():
 @app.route('/schedule/<date>/')
 def schedule_withdate(date):
     if("userId" not in session):
-        return redirect(url_for("login"))
+        return jsonify({"status": 401, "data": "Not logged in"}), 401
     else:
 
         scheduleResponse = getSchedule(session["token"], session["userId"], ("E" if session["accountType"] == "Student" else "P"), date)
         session["token"] = scheduleResponse["token"]
         return jsonify({"status": 200, "data": {k : [value.toJSON() for value in v] for k, v in scheduleResponse["data"].items()}})
+
+
+@app.route("/grades/")
+def grades():
+    if("userId" not in session):
+        return jsonify({"status": 401, "data": "Not logged in"}), 401
+    response = getGrades(session["token"], session["userId"], ("eleves" if session["accountType"] == "Student" else "profs"))
+    
+    return jsonify(response)
 
 app.run(port=8000, host="0.0.0.0", threaded=True)

@@ -101,3 +101,48 @@ def getSchedule(token, userId, accountType, date=None):
             courses[day] = []
         courses[day].append(Course(name, teacher, room, start_minutes, end_minutes, color))
     return {"token": token, "data":courses}
+
+
+
+def getGrades(userId, accountType):
+    response = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/notes.awp', {"anneeScolaire": ""}, params={"verbe": "get", "v":"4.27.7"}, headers=headers)
+    data = response.json()
+    token = data["token"]
+    data = data["data"]
+    raw_grades = data["notes"]
+    raw_periods = data["periodes"]
+
+    grades = []
+
+    for grade in raw_grades:
+        grades.append({
+            "name": grade["codeMatiere"],
+            "fullname": grade["libelleMatiere"],
+            "teacher": grade["prof"],
+            "value": grade["valeur"],
+            "comment": grade["commentaire"],
+            "period": grade["codePeriode"],
+            "date": grade["date"],
+            "added": grade["dateSaisie"],
+            "weight": grade["coef"],
+            "on": grade["noteSur"],
+            "id": grade["id"],
+            "class": {
+                "average": grade["moyenneClasse"],
+                "max": grade["maxClasse"],
+                "min": grade["minClasse"]
+            }
+        })
+
+    periods = []
+
+    for period in raw_periods:
+        periods.append({
+            "id": period["codePeriode"],
+            "name": period["periode"],
+            "start": period["dateDebut"],
+            "end": period["dateFin"]
+        })
+
+    return {"status": 200, "data": {"grades": grades, "periods": periods}, "token": token}
+
