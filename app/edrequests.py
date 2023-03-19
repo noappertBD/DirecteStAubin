@@ -104,8 +104,10 @@ def getSchedule(token, userId, accountType, date=None):
 
 
 
-def getGrades(userId, accountType):
-    response = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/notes.awp', {"anneeScolaire": ""}, params={"verbe": "get", "v":"4.27.7"}, headers=headers)
+def getGrades(token, userId, accountType):
+    newHeaders = headers.copy()
+    newHeaders['x-token'] = token
+    response = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/notes.awp', {"anneeScolaire": ""}, params={"verbe": "get", "v":"4.27.7"}, headers=newHeaders)
     data = response.json()
     token = data["token"]
     data = data["data"]
@@ -118,7 +120,7 @@ def getGrades(userId, accountType):
         grades.append({
             "name": grade["codeMatiere"],
             "fullname": grade["libelleMatiere"],
-            "teacher": grade["prof"],
+            "grade": grade["devoir"],
             "value": grade["valeur"],
             "comment": grade["commentaire"],
             "period": grade["codePeriode"],
