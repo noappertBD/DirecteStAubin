@@ -44,11 +44,9 @@ headers = {
 }
 
 
-def makePost(url, data, params=None, headers=headers):
-    if params is None:
-        params = {'v': '4.27.4'}
+def makePost(url, data, params={'v': '4.27.4'}, headers=headers):
     params = params
-    data = f'data={json.dumps(data)}'
+    data = 'data=' + json.dumps(data)
     return requests.post(url, params=params, headers=headers, data=data)
 
 
@@ -60,19 +58,14 @@ def getHomework(token, userId, date):
     params = {'verbe': "get", 'v': '4.27.4'}
     newHeaders = headers.copy()
     newHeaders['x-token'] = token
-    if date is None:
-        return makePost(
-            f'https://api.ecoledirecte.com/v3/Eleves/{userId}/cahierdetexte.awp',
-            {},
-            params,
-            newHeaders,
-        )
+    if(date == None):
+        return makePost('https://api.ecoledirecte.com/v3/Eleves/{}/cahierdetexte.awp'.format(userId), {}, params, newHeaders)
     else:
         return makePost('https://api.ecoledirecte.com/v3/Eleves/{}/{}-{}-{}/cahierdetexte.awp'.format(userId, date(datetime.date.year)), {}, params, newHeaders)
 
 def getSchedule(token, userId, accountType, date=None):
     params = {'verbe': "get", 'v': '4.27.4'}
-    if date is None:
+    if(date == None):
         start_date = datetime.date.today()
     else:
         start_date = datetime.datetime.strptime(date, "%Y-%m-%d")
@@ -100,11 +93,11 @@ def getSchedule(token, userId, accountType, date=None):
         start = datetime.datetime.strptime(data["start_date"], "%Y-%m-%d %H:%M")
         end = datetime.datetime.strptime(data["end_date"], "%Y-%m-%d %H:%M")
         color = data["color"]
-
+    
         start_minutes = (start.hour*60 + start.minute) - 495
         end_minutes = (end.hour*60 + end.minute) - 495
         day = start.strftime("%Y-%m-%d")
-        if day not in courses:
+        if(not day in courses):
             courses[day] = []
         courses[day].append(Course(name, teacher, room, start_minutes, end_minutes, color))
     return {"token": token, "data":courses}
@@ -121,8 +114,10 @@ def getGrades(token, userId, accountType):
     raw_grades = data["notes"]
     raw_periods = data["periodes"]
 
-    grades = [
-        {
+    grades = []
+
+    for grade in raw_grades:
+        grades.append({
             "name": grade["codeMatiere"],
             "fullname": grade["libelleMatiere"],
             "grade": grade["devoir"],
@@ -137,19 +132,19 @@ def getGrades(token, userId, accountType):
             "class": {
                 "average": grade["moyenneClasse"],
                 "max": grade["maxClasse"],
-                "min": grade["minClasse"],
-            },
-        }
-        for grade in raw_grades
-    ]
-    periods = [
-        {
+                "min": grade["minClasse"]
+            }
+        })
+
+    periods = []
+
+    for period in raw_periods:
+        periods.append({
             "id": period["codePeriode"],
             "name": period["periode"],
             "start": period["dateDebut"],
-            "end": period["dateFin"],
-        }
-        for period in raw_periods
-    ]
+            "end": period["dateFin"]
+        })
+
     return {"status": 200, "data": {"grades": grades, "periods": periods}, "token": token}
 

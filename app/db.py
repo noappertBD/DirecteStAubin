@@ -2,7 +2,7 @@ from sqlobject import sqlhub, connectionForURI, SQLObject, StringCol, IntCol, Da
 import os
 
 db_filename = os.path.abspath('data.db')
-connection_string = f'sqlite:{db_filename}'
+connection_string = 'sqlite:' + db_filename
 sqlhub.processConnection = connectionForURI(connection_string)
 
 
