@@ -113,4 +113,4 @@ def viescolaire():
     response = getViescolaire(session["token"], session["userId"], ("eleves" if session["accountType"] == "Student" else "profs"))
     return jsonify(response)
 
-app.run(port=8000, host="0.0.0.0", threaded=True, debug=True)
+app.run(port=8000, host="0.0.0.0", threaded=True)
