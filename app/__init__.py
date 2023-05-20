@@ -9,7 +9,7 @@
                                                                                                      
 from app.db import Users
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
-from app.edrequests import getLoginInfo, getHomework, getSchedule, getGrades
+from app.edrequests import getLoginInfo, getHomework, getSchedule, getGrades, getViescolaire
 
 app = Flask("DirecteSaintAubin")
 app.config["SECRET_KEY"] = "devsecret"
@@ -106,4 +106,11 @@ def grades():
     
     return jsonify(response)
 
-app.run(port=8000, host="0.0.0.0", threaded=True)
+@app.route("/viescolaire/")
+def viescolaire():
+    if("userId" not in session):
+        return jsonify({"status": 401, "data": "Not logged in"}), 401
+    response = getViescolaire(session["token"], session["userId"], ("eleves" if session["accountType"] == "Student" else "profs"))
+    return jsonify(response)
+
+app.run(port=8000, host="0.0.0.0", threaded=True, debug=True)
