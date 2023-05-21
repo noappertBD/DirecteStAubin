@@ -20,6 +20,7 @@ app.config.update(
 )
 
 
+### LOGIN ###
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     if request.method != 'POST':
@@ -51,6 +52,7 @@ def login():
     return jsonify(loginResponse.json())
 
 
+### PROFILE ###
 @app.route('/profile/')
 def profiles():
     users = Users.select()
@@ -67,6 +69,7 @@ def profile(discriminentId):
     return jsonify(user)
 
 
+### DEVOIRS ###
 @app.route('/homeworks/')
 def homework():
     if "userId" not in session:
@@ -76,16 +79,7 @@ def homework():
     return jsonify({"status": 200, "data": homeworkResponse.json()})
 
 
-@app.after_request
-def add_header(response):
-    response.headers["Access-Control-Allow-Origin"] = request.headers.get(
-        "Origin")
-    response.headers["Access-Control-Allow-Credentials"] = "true"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, TOKEN, token"
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
-    return response
-
-
+### EMPLOI DU TEMPS ###
 @app.route('/schedule/')
 def schedule():
     if "userId" not in session:
@@ -106,6 +100,7 @@ def schedule_withdate(date):
     return jsonify({"status": 200, "data": {k: [value.toJSON() for value in v] for k, v in scheduleResponse["data"].items()}})
 
 
+### NOTES ###
 @app.route("/grades/")
 def grades():
     if ("userId" not in session):
@@ -115,6 +110,7 @@ def grades():
     return jsonify(response)
 
 
+### VIE SCOLAIRE ###
 @app.route("/viescolaire/")
 def viescolaire():
     if ("userId" not in session):
@@ -122,6 +118,44 @@ def viescolaire():
     response = getViescolaire(session["token"], session["userId"], (
         "eleves" if session["accountType"] == "Student" else "profs"))
     return jsonify(response)
+
+
+### MAILS ###
+@app.route("/mail/")
+def mail():
+    pass
+
+
+@app.route("/mail/read/")
+def mail_read():
+    pass
+
+
+@app.route("/mail/send/")
+def mail_send():
+    pass
+
+
+### CLOUD ###
+@app.route("/cloud/")
+def cloud():
+    pass
+
+
+### ESPACES DE TRAVAIL ###
+@app.route("/workspaces/")
+def workspaces():
+    pass
+
+### RESTE ###
+@app.after_request
+def add_header(response):
+    response.headers["Access-Control-Allow-Origin"] = request.headers.get(
+        "Origin")
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, TOKEN, token"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    return response
 
 
 app.run(port=8000, host="0.0.0.0", threaded=True)
