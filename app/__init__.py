@@ -9,7 +9,8 @@
 
 from app.db import Users
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
-from app.edrequests import getLoginInfo, getHomework, getSchedule, getGrades, getViescolaire
+from app.edrequests import getLoginInfo, getHomework, getSchedule, getGrades, getViescolaire, getMails
+import requests
 
 app = Flask("DirecteSaintAubin")
 app.config["SECRET_KEY"] = "devsecret"
@@ -123,7 +124,39 @@ def viescolaire():
 ### MAILS ###
 @app.route("/mail/")
 def mail():
-    pass
+    if ("userId" not in session):
+        return jsonify({"status": 401, "data": "Not logged in"}), 401
+    response = getMails(session["token"], session["userId"], (
+        "eleves" if session["accountType"] == "Student" else "profs"), "", "")
+    session["token"] = response['token']
+    return(jsonify(response))
+
+@app.route("/mail/q=<query>/")
+def mail_query(query):
+    if ("userId" not in session):
+        return jsonify({"status": 401, "data": "Not logged in"}), 401
+    response = getMails(session["token"], session["userId"], (
+        "eleves" if session["accountType"] == "Student" else "profs"), query, "")
+    session["token"] = response['token']
+    return(jsonify(response))
+
+@app.route("/mail/<classeur>/")
+def mail_classeur(classeur):
+    if ("userId" not in session):
+        return jsonify({"status": 401, "data": "Not logged in"}), 401
+    response = getMails(session["token"], session["userId"], (
+        "eleves" if session["accountType"] == "Student" else "profs"), "", classeur)
+    session["token"] = response['token']
+    return(jsonify(response))
+
+@app.route("/mail/<classeur>/q=<query>/")
+def mail_query_in_classeur(classeur, query):
+    if ("userId" not in session):
+        return jsonify({"status": 401, "data": "Not logged in"}), 401
+    response = getMails(session["token"], session["userId"], (
+        "eleves" if session["accountType"] == "Student" else "profs"), query, classeur)
+    session["token"] = response['token']
+    return(jsonify(response))
 
 
 @app.route("/mail/read/")

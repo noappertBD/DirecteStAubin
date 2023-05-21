@@ -46,12 +46,10 @@ headers = {
     'x-token': '',
 }
 
-version = "4.32.0"
-
 
 def makePost(url, data, params=None, headers=headers):
     if params is None:
-        params = {'v': version}
+        params = {'v': "4.32.0"}
     params = params
     data = f'data={json.dumps(data)}'
     return requests.post(url, params=params, headers=headers, data=data)
@@ -64,7 +62,7 @@ def getLoginInfo(username, password):
 
 
 def getHomework(token, userId, date):
-    params = {'verbe': "get", 'v': version}
+    params = {'verbe': "get", 'v': "4.32.0"}
     newHeaders = headers.copy()
     newHeaders['x-token'] = token
     if date is None:
@@ -79,7 +77,7 @@ def getHomework(token, userId, date):
 
 
 def getSchedule(token, userId, accountType, date=None):
-    params = {'verbe': "get", 'v': version}
+    params = {'verbe': "get", 'v': "4.32.0"}
     if date is None:
         start_date = datetime.date.today()
     else:
@@ -126,7 +124,7 @@ def getGrades(token, userId, accountType):
     newHeaders = headers.copy()
     newHeaders['x-token'] = token
     response = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/notes.awp', {
-                        "anneeScolaire": ""}, params={"verbe": "get", "v": version}, headers=newHeaders)
+                        "anneeScolaire": ""}, params={"verbe": "get", "v": "4.32.0"}, headers=newHeaders)
     data = response.json()
     token = data["token"]
     data = data["data"]
@@ -170,8 +168,33 @@ def getViescolaire(token, userId, accountType):
     newHeaders = headers.copy()
     newHeaders['x-token'] = token
     response = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/viescolaire.awp', {
-                        "anneeScolaire": ""}, params={"verbe": "get", "v": version}, headers=newHeaders)
+                        "anneeScolaire": ""}, params={"verbe": "get", "v": "4.32.0"}, headers=newHeaders)
     data = response.json()
     token = data["token"]
     data = data["data"]
     return {"status": 200, "data": data, "token": token}
+
+def getMails(token, userId, accountType, query, classeur):
+    newHeaders = headers.copy()
+    newHeaders['x-token'] = token
+    params = {
+        'force': 'false',
+        'typeRecuperation': ("classeur" if classeur is not None else ""),
+        'idClasseur': classeur,
+        'orderBy': 'date',
+        'order': 'desc',
+        'query': query,
+        'onlyRead': '',
+        'page': '',
+        'itemsPerPage': '',
+        'getAll': '1',
+        'verbe': 'get',
+        'v': '4.32.0',
+    }
+    response = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/messages.awp', {
+                        "anneeScolaire": ""}, params, headers=newHeaders)
+    data = response.json()
+    token = data["token"]
+    data = data["data"]
+    return {"status": 200, "data": data, "token": token}
+    
