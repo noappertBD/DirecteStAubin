@@ -58,7 +58,6 @@ def profiles():
     users = Users.select()
     return jsonify({"code": "200", "data": [user.toDict() for user in users]})
 
-
 @app.route('/profile/<discriminentId>/', methods=['GET'])
 def profile(discriminentId):
     verify = Users.select(Users.q.discriminentId == discriminentId)
@@ -89,7 +88,6 @@ def schedule():
     session["token"] = scheduleResponse["token"]
     return jsonify({"status": 200, "data": {k: [value.toJSON() for value in v] for k, v in scheduleResponse["data"].items()}})
 
-
 @app.route('/schedule/<date>/')
 def schedule_withdate(date):
     if "userId" not in session:
@@ -107,6 +105,7 @@ def grades():
         return jsonify({"status": 401, "data": "Not logged in"}), 401
     response = getGrades(session["token"], session["userId"],
                          ("eleves" if session["accountType"] == "Student" else "profs"))
+    session["token"] = response['token']
     return jsonify(response)
 
 
@@ -117,6 +116,7 @@ def viescolaire():
         return jsonify({"status": 401, "data": "Not logged in"}), 401
     response = getViescolaire(session["token"], session["userId"], (
         "eleves" if session["accountType"] == "Student" else "profs"))
+    session["token"] = response['token']
     return jsonify(response)
 
 
