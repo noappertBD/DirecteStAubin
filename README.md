@@ -17,10 +17,12 @@ Ce repo est la partie backend de DSA. Le backend (API) ne rend aucune template (
 curl -X POST -d "username=[*nomdutilisateur]&password=[*motdepasse]" http://[*host]:[*port]/login/
 ```
 
-[O] Vie scolaire  
-[O] Notes  
-[-] Messagerie  
-[O] Emploi du temps  
-[O] Cahier de textes  
-[-] Mon cloud  
-[-] Espaces de travail  
+| Fonctionnalités | Status |
+| ------------ | ------------ |
+| Emploi du temps | OK |
+| Vie scolaire | OK |
+| Devoirs | OK |
+| Notes | OK |
+| Espaces de travail | En cours |
+| Messagerie | PAS OK |
+| Cloud | PAS OK |
