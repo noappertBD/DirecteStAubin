@@ -16,10 +16,3 @@ Ce repo est la partie backend de DSA. Le backend (API) ne rend aucune template (
 ```bash
 curl -X POST -d "username=[*nomdutilisateur]&password=[*motdepasse]" http://[*host]:[*port]/login/
 ```
-
-> **Via Powershell:**
-
-```powershell
-$session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
-Invoke-WebRequest -UseBasicParsing -Uri "http://[*host]:[*port]/login" -Method "POST" -Body "username=[*nomdutilisateur]&password=[*motdepasse]"
-```
