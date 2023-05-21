@@ -15,4 +15,5 @@ class Users(SQLObject):
     def toDict(self):
         return {"id": self.id, "discriminentId": self.discriminentId, "firstName": self.firstName, "lastName": self.lastName, "classLevel": self.classLevel}
 
+
 Users.createTable(ifNotExists=True)

@@ -1,6 +1,8 @@
-import requests, json
+import requests
+import json
 import urllib.parse
-import datetime, time
+import datetime
+import time
 
 
 class Course:
@@ -29,6 +31,7 @@ class Course:
             "color": self.color
         }
 
+
 headers = {
     'authority': 'api.ecoledirecte.com',
     'accept': 'application/json, text/plain, */*',
@@ -55,8 +58,10 @@ def makePost(url, data, params=None, headers=headers):
 
 
 def getLoginInfo(username, password):
-    data = {"uuid": "", "identifiant": urllib.parse.quote(username), "motdepasse": urllib.parse.quote(password), "isReLogin": False}
+    data = {"uuid": "", "identifiant": urllib.parse.quote(
+        username), "motdepasse": urllib.parse.quote(password), "isReLogin": False}
     return makePost('https://api.ecoledirecte.com/v3/login.awp', data)
+
 
 def getHomework(token, userId, date):
     params = {'verbe': "get", 'v': version}
@@ -71,6 +76,7 @@ def getHomework(token, userId, date):
         )
     else:
         return makePost('https://api.ecoledirecte.com/v3/Eleves/{}/{}-{}-{}/cahierdetexte.awp'.format(userId, date(datetime.date.year)), {}, params, newHeaders)
+
 
 def getSchedule(token, userId, accountType, date=None):
     params = {'verbe': "get", 'v': version}
@@ -90,8 +96,10 @@ def getSchedule(token, userId, accountType, date=None):
 
     newHeaders = headers.copy()
     newHeaders['x-token'] = token
-    print(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/emploidutemps.awp')
-    result = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/emploidutemps.awp', data, params, newHeaders).json()
+    print(
+        f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/emploidutemps.awp')
+    result = makePost(
+        f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/emploidutemps.awp', data, params, newHeaders).json()
     token = result["token"]
     result = result["data"]
     courses = {}
@@ -99,7 +107,8 @@ def getSchedule(token, userId, accountType, date=None):
         name = data["matiere"]
         teacher = data["prof"]
         room = data["salle"]
-        start = datetime.datetime.strptime(data["start_date"], "%Y-%m-%d %H:%M")
+        start = datetime.datetime.strptime(
+            data["start_date"], "%Y-%m-%d %H:%M")
         end = datetime.datetime.strptime(data["end_date"], "%Y-%m-%d %H:%M")
         color = data["color"]
 
@@ -108,15 +117,16 @@ def getSchedule(token, userId, accountType, date=None):
         day = start.strftime("%Y-%m-%d")
         if day not in courses:
             courses[day] = []
-        courses[day].append(Course(name, teacher, room, start_minutes, end_minutes, color))
-    return {"token": token, "data":courses}
-
+        courses[day].append(
+            Course(name, teacher, room, start_minutes, end_minutes, color))
+    return {"token": token, "data": courses}
 
 
 def getGrades(token, userId, accountType):
     newHeaders = headers.copy()
     newHeaders['x-token'] = token
-    response = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/notes.awp', {"anneeScolaire": ""}, params={"verbe": "get", "v":version}, headers=newHeaders)
+    response = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/notes.awp', {
+                        "anneeScolaire": ""}, params={"verbe": "get", "v": version}, headers=newHeaders)
     data = response.json()
     token = data["token"]
     data = data["data"]
@@ -155,10 +165,12 @@ def getGrades(token, userId, accountType):
     ]
     return {"status": 200, "data": {"grades": grades, "periods": periods}, "token": token}
 
+
 def getViescolaire(token, userId, accountType):
     newHeaders = headers.copy()
     newHeaders['x-token'] = token
-    response = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/viescolaire.awp', {"anneeScolaire": ""}, params={"verbe": "get", "v":version}, headers=newHeaders)
+    response = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/viescolaire.awp', {
+                        "anneeScolaire": ""}, params={"verbe": "get", "v": version}, headers=newHeaders)
     data = response.json()
     token = data["token"]
     data = data["data"]
