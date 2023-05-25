@@ -23,6 +23,6 @@ curl -X POST -d "username=[*nomdutilisateur]&password=[*motdepasse]" http://[*ho
 | Vie scolaire | OK |
 | Devoirs | OK |
 | Notes | OK |
-| Espaces de travail | En cours |
-| Messagerie | PAS OK |
+| Messagerie | En cours |
+| Espaces de travail | PAS OK |
 | Cloud | PAS OK |
