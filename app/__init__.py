@@ -51,9 +51,7 @@ def login():
     if verify.count() == 0:
         Users(discriminentId=discriminentId, firstName=firstName,
               lastName=lastName, classLevel=classLevel)
-    if request.form['cookies'] == "False":
-        pass
-    else:
+    if request.form['cookies'] != "False":
         session["userId"] = id_key
         session["token"] = loginResponse.json().get("token")
     return jsonify(loginResponse.json())
