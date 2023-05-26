@@ -39,12 +39,10 @@ def login():
     lastName = account.get("nom")
     if ("classe" in account.get("profile")):
         classLevel = account.get("profile").get("classe").get("code")
-        if "cookies" in request.form != "False":
-            session["accountType"] = "Student"
+        session["accountType"] = "Student"
     else:
         classLevel = "Teacher"
-        if "cookies" in request.form != "False":
-            session["accountType"] = "Teacher"
+        session["accountType"] = "Teacher"
 
     discriminentId = str(id_key)+str(loginId)
     verify = Users.selectBy(discriminentId=discriminentId)
@@ -87,8 +85,7 @@ def homework():
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
 
     homeworkResponse = getHomework(token, user_id, None)
-    if "cookies" in request.form != "False":
-        session["token"] = homeworkResponse.json().get("token")
+    session["token"] = homeworkResponse.json().get("token")
     return jsonify({"status": 200, "data": homeworkResponse.json()})
 
 
@@ -111,17 +108,11 @@ def schedule():
     elif "accountType" in request.form:
         account_type = str(request.form["accountType"])
     else:
-        return (
-            jsonify(
-                {"status": 401, "data": f"Invalid accountType {account_type}"}
-            ),
-            401,
-        )
-    
+        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
+
     scheduleResponse = getSchedule(token, user_id, (
         "E" if account_type == "Student" else "P"), None)
-    if "cookies" in request.form != "False":
-        session["token"] = scheduleResponse["token"]
+    session["token"] = scheduleResponse["token"]
     return jsonify({"status": 200, "data": {k: [value.toJSON() for value in v] for k, v in scheduleResponse["data"].items()}})
 
 @app.route('/schedule/<date>/', methods=['GET', 'POST'])
@@ -142,17 +133,11 @@ def schedule_withdate(date):
     elif "accountType" in request.form:
         account_type = str(request.form["accountType"])
     else:
-        return (
-            jsonify(
-                {"status": 401, "data": f"Invalid accountType {account_type}"}
-            ),
-            401,
-        )
+        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
     
     scheduleResponse = getSchedule(token, user_id, (
         "E" if account_type == "Student" else "P"), date)
-    if "cookies" in request.form != "False":
-        session["token"] = scheduleResponse["token"]
+    session["token"] = scheduleResponse["token"]
     return jsonify({"status": 200, "data": {k: [value.toJSON() for value in v] for k, v in scheduleResponse["data"].items()}})
 
 
@@ -175,17 +160,11 @@ def grades():
     elif "accountType" in request.form:
         account_type = str(request.form["accountType"])
     else:
-        return (
-            jsonify(
-                {"status": 401, "data": f"Invalid accountType {account_type}"}
-            ),
-            401,
-        )
+        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
     
     response = getGrades(token, user_id,
                          ("eleves" if account_type == "Student" else "profs"))
-    if "cookies" in request.form != "False":
-        session["token"] = response['token']
+    session["token"] = response['token']
     return jsonify(response)
 
 
@@ -208,17 +187,11 @@ def viescolaire():
     elif "accountType" in request.form:
         account_type = str(request.form["accountType"])
     else:
-        return (
-            jsonify(
-                {"status": 401, "data": f"Invalid accountType {account_type}"}
-            ),
-            401,
-        )
+        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
     
     response = getViescolaire(token, user_id, (
         "eleves" if account_type == "Student" else "profs"))
-    if "cookies" in request.form != "False":
-        session["token"] = response['token']
+    session["token"] = response['token']
     return jsonify(response)
 
 
@@ -241,17 +214,11 @@ def mail():
     elif "accountType" in request.form:
         account_type = str(request.form["accountType"])
     else:
-        return (
-            jsonify(
-                {"status": 401, "data": f"Invalid accountType {account_type}"}
-            ),
-            401,
-        )
+        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
     
     response = getMails(token, user_id, (
         "eleves" if account_type == "Student" else "profs"), "", "")
-    if "cookies" in request.form != "False":
-        session["token"] = response['token']
+    session["token"] = response['token']
     return(jsonify(response))
 
 @app.route("/mail/q=<query>/", methods=['GET', 'POST'])
@@ -272,17 +239,11 @@ def mail_query(query):
     elif "accountType" in request.form:
         account_type = str(request.form["accountType"])
     else:
-        return (
-            jsonify(
-                {"status": 401, "data": f"Invalid accountType {account_type}"}
-            ),
-            401,
-        )
+        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
     
     response = getMails(token, user_id, (
         "eleves" if account_type == "Student" else "profs"), query, "")
-    if "cookies" in request.form != "False":
-        session["token"] = response['token']
+    session["token"] = response['token']
     return(jsonify(response))
 
 @app.route("/mail/<classeur>/", methods=['GET', 'POST'])
@@ -303,17 +264,11 @@ def mail_classeur(classeur):
     elif "accountType" in request.form:
         account_type = str(request.form["accountType"])
     else:
-        return (
-            jsonify(
-                {"status": 401, "data": f"Invalid accountType {account_type}"}
-            ),
-            401,
-        )
+        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
     
     response = getMails(token, user_id, (
         "eleves" if account_type == "Student" else "profs"), "", classeur)
-    if "cookies" in request.form != "False":
-        session["token"] = response['token']
+    session["token"] = response['token']
     return(jsonify(response))
 
 @app.route("/mail/<classeur>/q=<query>/", methods=['GET', 'POST'])
@@ -334,17 +289,11 @@ def mail_query_in_classeur(classeur, query):
     elif "accountType" in request.form:
         account_type = str(request.form["accountType"])
     else:
-        return (
-            jsonify(
-                {"status": 401, "data": f"Invalid accountType {account_type}"}
-            ),
-            401,
-        )
+        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
 
     response = getMails(token, user_id, (
         "eleves" if account_type == "Student" else "profs"), query, classeur)
-    if "cookies" in request.form != "False":
-        session["token"] = response['token']
+    session["token"] = response['token']
     return(jsonify(response))
 
 
