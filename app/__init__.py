@@ -107,7 +107,7 @@ def schedule():
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
 
     if "accountType" in session:
-        account_type = session['accountType']
+        account_type = str(session['accountType'])
     elif "accountType" in request.form:
         account_type = str(request.form["accountType"])
     else:
