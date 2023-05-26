@@ -106,10 +106,10 @@ def schedule():
     else:
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
 
-    if "accountType" in request.form:
-        account_type = request.form["accountType"]
-    elif "accountType" in session:
+    if "accountType" in session:
         account_type = session['accountType']
+    elif "accountType" in request.form:
+        account_type = str(request.form["accountType"])
     else:
         return jsonify({"status": 401, "data": "Invalid accountType"}), 401
     
@@ -132,10 +132,10 @@ def schedule_withdate(date):
     else:
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
 
-    if "accountType" in request.form:
-        account_type = request.form["accountType"]
-    elif "accountType" in session:
+    if "accountType" in session:
         account_type = session['accountType']
+    elif "accountType" in request.form:
+        account_type = str(request.form["accountType"])
     else:
         return jsonify({"status": 401, "data": "Invalid accountType"}), 401
     
@@ -160,10 +160,10 @@ def grades():
     else:
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
 
-    if "accountType" in request.form:
-        account_type = request.form["accountType"]
-    elif "accountType" in session:
+    if "accountType" in session:
         account_type = session['accountType']
+    elif "accountType" in request.form:
+        account_type = str(request.form["accountType"])
     else:
         return jsonify({"status": 401, "data": "Invalid accountType"}), 401
     
@@ -188,10 +188,10 @@ def viescolaire():
     else:
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
 
-    if "accountType" in request.form:
-        account_type = request.form["accountType"]
-    elif "accountType" in session:
+    if "accountType" in session:
         account_type = session['accountType']
+    elif "accountType" in request.form:
+        account_type = str(request.form["accountType"])
     else:
         return jsonify({"status": 401, "data": "Invalid accountType"}), 401
     
@@ -216,10 +216,10 @@ def mail():
     else:
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
 
-    if "accountType" in request.form:
-        account_type = request.form["accountType"]
-    elif "accountType" in session:
+    if "accountType" in session:
         account_type = session['accountType']
+    elif "accountType" in request.form:
+        account_type = str(request.form["accountType"])
     else:
         return jsonify({"status": 401, "data": "Invalid accountType"}), 401
     
@@ -242,10 +242,10 @@ def mail_query(query):
     else:
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
 
-    if "accountType" in request.form:
-        account_type = request.form["accountType"]
-    elif "accountType" in session:
+    if "accountType" in session:
         account_type = session['accountType']
+    elif "accountType" in request.form:
+        account_type = str(request.form["accountType"])
     else:
         return jsonify({"status": 401, "data": "Invalid accountType"}), 401
     
@@ -268,10 +268,10 @@ def mail_classeur(classeur):
     else:
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
 
-    if "accountType" in request.form:
-        account_type = request.form["accountType"]
-    elif "accountType" in session:
+    if "accountType" in session:
         account_type = session['accountType']
+    elif "accountType" in request.form:
+        account_type = str(request.form["accountType"])
     else:
         return jsonify({"status": 401, "data": "Invalid accountType"}), 401
     
@@ -294,10 +294,10 @@ def mail_query_in_classeur(classeur, query):
     else:
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
 
-    if "accountType" in request.form:
-        account_type = request.form["accountType"]
-    elif "accountType" in session:
+    if "accountType" in session:
         account_type = session['accountType']
+    elif "accountType" in request.form:
+        account_type = str(request.form["accountType"])
     else:
         return jsonify({"status": 401, "data": "Invalid accountType"}), 401
     
