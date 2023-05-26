@@ -98,16 +98,14 @@ def schedule():
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    if "token" in request.form:
-        token = str(request.form['token'])
-    else:
-        token = session['token']
-    if "userId" in request.form:
-        user_id = str(request.form['userId'])
-    elif "userId" in session:
+    token = session['token'] if "token" in session else str(request.form['token'])
+    if "userId" in session:
         user_id = session['userId']
+    elif "userId" in request.form:
+        user_id = str(request.form['userId'])
     else:
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
+
     if "accountType" in request.form:
         account_type = request.form["accountType"]
     elif "accountType" in session:
@@ -126,16 +124,14 @@ def schedule_withdate(date):
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    if "token" in request.form:
-        token = str(request.form['token'])
-    else:
-        token = session['token']
-    if "userId" in request.form:
-        user_id = str(request.form['userId'])
-    elif "userId" in session:
+    token = session['token'] if "token" in session else str(request.form['token'])
+    if "userId" in session:
         user_id = session['userId']
+    elif "userId" in request.form:
+        user_id = str(request.form['userId'])
     else:
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
+
     if "accountType" in request.form:
         account_type = request.form["accountType"]
     elif "accountType" in session:
@@ -156,16 +152,14 @@ def grades():
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    if "token" in request.form:
-        token = str(request.form['token'])
-    else:
-        token = session['token']
-    if "userId" in request.form:
-        user_id = str(request.form['userId'])
-    elif "userId" in session:
+    token = session['token'] if "token" in session else str(request.form['token'])
+    if "userId" in session:
         user_id = session['userId']
+    elif "userId" in request.form:
+        user_id = str(request.form['userId'])
     else:
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
+
     if "accountType" in request.form:
         account_type = request.form["accountType"]
     elif "accountType" in session:
@@ -186,16 +180,14 @@ def viescolaire():
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    if "token" in request.form:
-        token = str(request.form['token'])
-    else:
-        token = session['token']
-    if "userId" in request.form:
-        user_id = str(request.form['userId'])
-    elif "userId" in session:
+    token = session['token'] if "token" in session else str(request.form['token'])
+    if "userId" in session:
         user_id = session['userId']
+    elif "userId" in request.form:
+        user_id = str(request.form['userId'])
     else:
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
+
     if "accountType" in request.form:
         account_type = request.form["accountType"]
     elif "accountType" in session:
@@ -216,16 +208,14 @@ def mail():
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    if "token" in request.form:
-        token = str(request.form['token'])
-    else:
-        token = session['token']
-    if "userId" in request.form:
-        user_id = str(request.form['userId'])
-    elif "userId" in session:
+    token = session['token'] if "token" in session else str(request.form['token'])
+    if "userId" in session:
         user_id = session['userId']
+    elif "userId" in request.form:
+        user_id = str(request.form['userId'])
     else:
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
+
     if "accountType" in request.form:
         account_type = request.form["accountType"]
     elif "accountType" in session:
@@ -244,16 +234,14 @@ def mail_query(query):
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    if "token" in request.form:
-        token = str(request.form['token'])
-    else:
-        token = session['token']
-    if "userId" in request.form:
-        user_id = str(request.form['userId'])
-    elif "userId" in session:
+    token = session['token'] if "token" in session else str(request.form['token'])
+    if "userId" in session:
         user_id = session['userId']
+    elif "userId" in request.form:
+        user_id = str(request.form['userId'])
     else:
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
+
     if "accountType" in request.form:
         account_type = request.form["accountType"]
     elif "accountType" in session:
@@ -272,16 +260,14 @@ def mail_classeur(classeur):
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    if "token" in request.form:
-        token = str(request.form['token'])
-    else:
-        token = session['token']
-    if "userId" in request.form:
-        user_id = str(request.form['userId'])
-    elif "userId" in session:
+    token = session['token'] if "token" in session else str(request.form['token'])
+    if "userId" in session:
         user_id = session['userId']
+    elif "userId" in request.form:
+        user_id = str(request.form['userId'])
     else:
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
+
     if "accountType" in request.form:
         account_type = request.form["accountType"]
     elif "accountType" in session:
@@ -300,16 +286,14 @@ def mail_query_in_classeur(classeur, query):
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    if "token" in request.form:
-        token = str(request.form['token'])
-    else:
-        token = session['token']
-    if "userId" in request.form:
-        user_id = str(request.form['userId'])
-    elif "userId" in session:
+    token = session['token'] if "token" in session else str(request.form['token'])
+    if "userId" in session:
         user_id = session['userId']
+    elif "userId" in request.form:
+        user_id = str(request.form['userId'])
     else:
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
+
     if "accountType" in request.form:
         account_type = request.form["accountType"]
     elif "accountType" in session:
