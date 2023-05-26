@@ -111,7 +111,12 @@ def schedule():
     elif "accountType" in request.form:
         account_type = str(request.form["accountType"])
     else:
-        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
+        return (
+            jsonify(
+                {"status": 401, "data": f"Invalid accountType {account_type}"}
+            ),
+            401,
+        )
     
     scheduleResponse = getSchedule(token, user_id, (
         "E" if account_type == "Student" else "P"), None)
@@ -137,7 +142,12 @@ def schedule_withdate(date):
     elif "accountType" in request.form:
         account_type = str(request.form["accountType"])
     else:
-        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
+        return (
+            jsonify(
+                {"status": 401, "data": f"Invalid accountType {account_type}"}
+            ),
+            401,
+        )
     
     scheduleResponse = getSchedule(token, user_id, (
         "E" if account_type == "Student" else "P"), date)
@@ -165,7 +175,12 @@ def grades():
     elif "accountType" in request.form:
         account_type = str(request.form["accountType"])
     else:
-        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
+        return (
+            jsonify(
+                {"status": 401, "data": f"Invalid accountType {account_type}"}
+            ),
+            401,
+        )
     
     response = getGrades(token, user_id,
                          ("eleves" if account_type == "Student" else "profs"))
@@ -193,7 +208,12 @@ def viescolaire():
     elif "accountType" in request.form:
         account_type = str(request.form["accountType"])
     else:
-        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
+        return (
+            jsonify(
+                {"status": 401, "data": f"Invalid accountType {account_type}"}
+            ),
+            401,
+        )
     
     response = getViescolaire(token, user_id, (
         "eleves" if account_type == "Student" else "profs"))
@@ -221,7 +241,12 @@ def mail():
     elif "accountType" in request.form:
         account_type = str(request.form["accountType"])
     else:
-        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
+        return (
+            jsonify(
+                {"status": 401, "data": f"Invalid accountType {account_type}"}
+            ),
+            401,
+        )
     
     response = getMails(token, user_id, (
         "eleves" if account_type == "Student" else "profs"), "", "")
@@ -247,7 +272,12 @@ def mail_query(query):
     elif "accountType" in request.form:
         account_type = str(request.form["accountType"])
     else:
-        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
+        return (
+            jsonify(
+                {"status": 401, "data": f"Invalid accountType {account_type}"}
+            ),
+            401,
+        )
     
     response = getMails(token, user_id, (
         "eleves" if account_type == "Student" else "profs"), query, "")
@@ -273,7 +303,12 @@ def mail_classeur(classeur):
     elif "accountType" in request.form:
         account_type = str(request.form["accountType"])
     else:
-        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
+        return (
+            jsonify(
+                {"status": 401, "data": f"Invalid accountType {account_type}"}
+            ),
+            401,
+        )
     
     response = getMails(token, user_id, (
         "eleves" if account_type == "Student" else "profs"), "", classeur)
@@ -299,8 +334,13 @@ def mail_query_in_classeur(classeur, query):
     elif "accountType" in request.form:
         account_type = str(request.form["accountType"])
     else:
-        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
-    
+        return (
+            jsonify(
+                {"status": 401, "data": f"Invalid accountType {account_type}"}
+            ),
+            401,
+        )
+
     response = getMails(token, user_id, (
         "eleves" if account_type == "Student" else "profs"), query, classeur)
     if "cookies" in request.form != "False":
