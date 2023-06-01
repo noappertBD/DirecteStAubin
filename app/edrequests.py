@@ -109,6 +109,8 @@ def getSchedule(token, userId, accountType, date=None):
             data["start_date"], "%Y-%m-%d %H:%M")
         end = datetime.datetime.strptime(data["end_date"], "%Y-%m-%d %H:%M")
         color = data["color"]
+        canceled = data["isAnnule"]
+        edited = data["isModifie"]
 
         start_minutes = (start.hour*60 + start.minute) - 495
         end_minutes = (end.hour*60 + end.minute) - 495
@@ -116,7 +118,7 @@ def getSchedule(token, userId, accountType, date=None):
         if day not in courses:
             courses[day] = []
         courses[day].append(
-            Course(name, teacher, room, start_minutes, end_minutes, color))
+            Course(name, teacher, room, start_minutes, end_minutes, color, canceled, edited))
     return {"token": token, "data": courses}
 
 
