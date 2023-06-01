@@ -109,8 +109,8 @@ def getSchedule(token, userId, accountType, date=None):
             data["start_date"], "%Y-%m-%d %H:%M")
         end = datetime.datetime.strptime(data["end_date"], "%Y-%m-%d %H:%M")
         color = data["color"]
-        canceled = data["isAnnule"]
-        edited = data["isModifie"]
+        canceled = data["isAnnule"] or False
+        edited = data["isModifie"] or False
 
         start_minutes = (start.hour*60 + start.minute) - 495
         end_minutes = (end.hour*60 + end.minute) - 495
