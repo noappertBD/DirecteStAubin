@@ -12,14 +12,18 @@ class Course:
     start: datetime.time = None
     end: datetime.time = None
     color: str = ""
+    canceled: False
+    edited: False
 
-    def __init__(self, name, teacher, room, start, end, color):
+    def __init__(self, name, teacher, room, start, end, color, canceled, edited):
         self.name = name
         self.teacher = teacher
         self.room = room
         self.start = start
         self.end = end
         self.color = color
+        self.canceled = canceled
+        self.edited = edited
 
     def toJSON(self):
         return {
@@ -28,7 +32,9 @@ class Course:
             "room": self.room,
             "start": self.start,
             "end": self.end,
-            "color": self.color
+            "color": self.color,
+            "canceled": self.canceled,
+            "edited": self.edited
         }
 
 
@@ -109,9 +115,8 @@ def getSchedule(token, userId, accountType, date=None):
             data["start_date"], "%Y-%m-%d %H:%M")
         end = datetime.datetime.strptime(data["end_date"], "%Y-%m-%d %H:%M")
         color = data["color"]
-        canceled = data["isAnnule"] or False
-        edited = data["isModifie"] or False
-
+        canceled = data["isAnnule"] == True
+        edited = data["isModifie"] == True 
         start_minutes = (start.hour*60 + start.minute) - 495
         end_minutes = (end.hour*60 + end.minute) - 495
         day = start.strftime("%Y-%m-%d")
