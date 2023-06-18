@@ -204,4 +204,18 @@ def getMails(token, userId, accountType, query, classeur):
     token = data["token"]
     data = data["data"]
     return {"status": 200, "data": data, "token": token}
-    
+
+def getMail(token, userId, accountType, id):
+    newHeaders = headers.copy()
+    newHeaders['x-token'] = token
+    params = {
+        'verbe': 'get',
+        'mode': 'destinataire',
+        'v': '4.32.0',
+    }
+    response = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/messages/{id}.awp', {
+                        "anneeScolaire": ""}, params, headers=newHeaders)
+    data = response.json()
+    token = data["token"]
+    data = data["data"]
+    return {"status": 200, "data": data, "token": token}

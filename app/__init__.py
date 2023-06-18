@@ -9,7 +9,7 @@
 
 from app.db import Users
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
-from app.edrequests import getLoginInfo, getHomework, getSchedule, getGrades, getViescolaire, getMails
+from app.edrequests import getLoginInfo, getHomework, getSchedule, getGrades, getViescolaire, getMails, getMail
 import requests
 
 app = Flask("DirecteSaintAubin")
@@ -28,7 +28,6 @@ def login():
         return render_template('login.html')
     username = str(request.form['username'])
     password = str(request.form['password'])
-    print(f'{username}:{password}')
     loginResponse = getLoginInfo(username, password)
     if loginResponse.json().get("code") != 200:
         return jsonify({"code": "401", "message": "Invalid credentials"}), 401
@@ -297,9 +296,30 @@ def mail_query_in_classeur(classeur, query):
     return(jsonify(response))
 
 
-@app.route("/mail/read/", methods=['GET', 'POST'])
-def mail_read():
-    pass
+@app.route("/mail/read/<id>", methods=['GET', 'POST'])
+def mail_read(id):
+    if "token" not in session and "token" not in request.form:
+        return jsonify({"status": 401, "data": "Not logged in"}), 401
+
+    token = session['token'] if "token" in session else str(request.form['token'])
+    if "userId" in session:
+        user_id = session['userId']
+    elif "userId" in request.form:
+        user_id = str(request.form['userId'])
+    else:
+        return jsonify({"status": 401, "data": "Invalid userId"}), 401
+
+    if "accountType" in session:
+        account_type = session['accountType']
+    elif "accountType" in request.form:
+        account_type = str(request.form["accountType"])
+    else:
+        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
+    
+    response = getMail(token, user_id, (
+        "eleves" if account_type == "Student" else "profs"), id)
+    session["token"] = response['token']
+    return(jsonify(response))
 
 
 @app.route("/mail/send/", methods=['GET', 'POST'])
