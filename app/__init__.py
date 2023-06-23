@@ -324,6 +324,35 @@ def mail_read(id):
 
 @app.route("/mail/send/", methods=['GET', 'POST'])
 def mail_send():
+    if "token" not in session and "token" not in request.form:
+        return jsonify({"status": 401, "data": "Not logged in"}), 401
+
+    token = session['token'] if "token" in session else str(request.form['token'])
+    if "userId" in session:
+        user_id = session['userId']
+    elif "userId" in request.form:
+        user_id = str(request.form['userId'])
+    else:
+        return jsonify({"status": 401, "data": "Invalid userId"}), 401
+
+    if "accountType" in session:
+        account_type = session['accountType']
+    elif "accountType" in request.form:
+        account_type = str(request.form["accountType"])
+    else:
+        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
+    
+    subject = request.form['subject'] if "subject" in request.form else None
+    content = request.form['content'] if "content" in request.form else None
+    to = request.form['to'] if "to" in request.form else None
+    
+    response = getMail(token, user_id, (
+        "eleves" if account_type == "Student" else "profs"), subject, content, to)
+    session["token"] = response['token']
+    return(jsonify(response))
+
+@app.route("/mail/dest/", methods=["GET", "POST"])
+def mail_dest():
     pass
 
 
