@@ -9,8 +9,9 @@
 
 from app.db import Users
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
-from app.edrequests import getLoginInfo, getHomework, getSchedule, getGrades, getViescolaire, getMails, getMail
-import requests
+from app.edrequests import getLoginInfo, getHomework, getSchedule, getGrades, getViescolaire, getMails, getMail, sendMail
+import base64
+import json
 
 app = Flask("DirecteSaintAubin")
 app.config["SECRET_KEY"] = "devsecret"
@@ -59,6 +60,7 @@ def profiles():
     users = Users.select()
     return jsonify({"code": "200", "data": [user.toDict() for user in users]})
 
+
 @app.route('/profile/<discriminentId>/', methods=['GET'])
 def profile(discriminentId):
     verify = Users.select(Users.q.discriminentId == discriminentId)
@@ -75,7 +77,8 @@ def homework():
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    token = session['token'] if "token" in session else str(request.form['token'])
+    token = session['token'] if "token" in session else str(
+        request.form['token'])
     if "userId" in session:
         user_id = session['userId']
     elif "userId" in request.form:
@@ -94,7 +97,8 @@ def schedule():
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    token = session['token'] if "token" in session else str(request.form['token'])
+    token = session['token'] if "token" in session else str(
+        request.form['token'])
     if "userId" in session:
         user_id = session['userId']
     elif "userId" in request.form:
@@ -114,12 +118,14 @@ def schedule():
     session["token"] = scheduleResponse["token"]
     return jsonify({"status": 200, "data": {k: [value.toJSON() for value in v] for k, v in scheduleResponse["data"].items()}})
 
+
 @app.route('/schedule/<date>/', methods=['GET', 'POST'])
 def schedule_withdate(date):
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    token = session['token'] if "token" in session else str(request.form['token'])
+    token = session['token'] if "token" in session else str(
+        request.form['token'])
     if "userId" in session:
         user_id = session['userId']
     elif "userId" in request.form:
@@ -133,7 +139,7 @@ def schedule_withdate(date):
         account_type = str(request.form["accountType"])
     else:
         return jsonify({"status": 401, "data": "Invalid accountType"}), 401
-    
+
     scheduleResponse = getSchedule(token, user_id, (
         "E" if account_type == "Student" else "P"), date)
     session["token"] = scheduleResponse["token"]
@@ -146,7 +152,8 @@ def grades():
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    token = session['token'] if "token" in session else str(request.form['token'])
+    token = session['token'] if "token" in session else str(
+        request.form['token'])
     if "userId" in session:
         user_id = session['userId']
     elif "userId" in request.form:
@@ -160,7 +167,7 @@ def grades():
         account_type = str(request.form["accountType"])
     else:
         return jsonify({"status": 401, "data": "Invalid accountType"}), 401
-    
+
     response = getGrades(token, user_id,
                          ("eleves" if account_type == "Student" else "profs"))
     session["token"] = response['token']
@@ -173,7 +180,8 @@ def viescolaire():
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    token = session['token'] if "token" in session else str(request.form['token'])
+    token = session['token'] if "token" in session else str(
+        request.form['token'])
     if "userId" in session:
         user_id = session['userId']
     elif "userId" in request.form:
@@ -187,7 +195,7 @@ def viescolaire():
         account_type = str(request.form["accountType"])
     else:
         return jsonify({"status": 401, "data": "Invalid accountType"}), 401
-    
+
     response = getViescolaire(token, user_id, (
         "eleves" if account_type == "Student" else "profs"))
     session["token"] = response['token']
@@ -200,7 +208,8 @@ def mail():
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    token = session['token'] if "token" in session else str(request.form['token'])
+    token = session['token'] if "token" in session else str(
+        request.form['token'])
     if "userId" in session:
         user_id = session['userId']
     elif "userId" in request.form:
@@ -214,18 +223,20 @@ def mail():
         account_type = str(request.form["accountType"])
     else:
         return jsonify({"status": 401, "data": "Invalid accountType"}), 401
-    
+
     response = getMails(token, user_id, (
         "eleves" if account_type == "Student" else "profs"), "", "")
     session["token"] = response['token']
-    return(jsonify(response))
+    return (jsonify(response))
+
 
 @app.route("/mail/q=<query>/", methods=['GET', 'POST'])
 def mail_query(query):
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    token = session['token'] if "token" in session else str(request.form['token'])
+    token = session['token'] if "token" in session else str(
+        request.form['token'])
     if "userId" in session:
         user_id = session['userId']
     elif "userId" in request.form:
@@ -239,18 +250,20 @@ def mail_query(query):
         account_type = str(request.form["accountType"])
     else:
         return jsonify({"status": 401, "data": "Invalid accountType"}), 401
-    
+
     response = getMails(token, user_id, (
         "eleves" if account_type == "Student" else "profs"), query, "")
     session["token"] = response['token']
-    return(jsonify(response))
+    return (jsonify(response))
+
 
 @app.route("/mail/<classeur>/", methods=['GET', 'POST'])
 def mail_classeur(classeur):
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    token = session['token'] if "token" in session else str(request.form['token'])
+    token = session['token'] if "token" in session else str(
+        request.form['token'])
     if "userId" in session:
         user_id = session['userId']
     elif "userId" in request.form:
@@ -264,18 +277,20 @@ def mail_classeur(classeur):
         account_type = str(request.form["accountType"])
     else:
         return jsonify({"status": 401, "data": "Invalid accountType"}), 401
-    
+
     response = getMails(token, user_id, (
         "eleves" if account_type == "Student" else "profs"), "", classeur)
     session["token"] = response['token']
-    return(jsonify(response))
+    return (jsonify(response))
+
 
 @app.route("/mail/<classeur>/q=<query>/", methods=['GET', 'POST'])
 def mail_query_in_classeur(classeur, query):
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    token = session['token'] if "token" in session else str(request.form['token'])
+    token = session['token'] if "token" in session else str(
+        request.form['token'])
     if "userId" in session:
         user_id = session['userId']
     elif "userId" in request.form:
@@ -293,15 +308,16 @@ def mail_query_in_classeur(classeur, query):
     response = getMails(token, user_id, (
         "eleves" if account_type == "Student" else "profs"), query, classeur)
     session["token"] = response['token']
-    return(jsonify(response))
+    return (jsonify(response))
 
 
-@app.route("/mail/read/<id>", methods=['GET', 'POST'])
+@app.route("/mail/read/<id>/", methods=['GET', 'POST'])
 def mail_read(id):
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    token = session['token'] if "token" in session else str(request.form['token'])
+    token = session['token'] if "token" in session else str(
+        request.form['token'])
     if "userId" in session:
         user_id = session['userId']
     elif "userId" in request.form:
@@ -315,41 +331,72 @@ def mail_read(id):
         account_type = str(request.form["accountType"])
     else:
         return jsonify({"status": 401, "data": "Invalid accountType"}), 401
-    
+
     response = getMail(token, user_id, (
         "eleves" if account_type == "Student" else "profs"), id)
     session["token"] = response['token']
-    return(jsonify(response))
+    return (jsonify(response))
+
+
+@app.route("/mail/read/<id>/page/", methods=['GET', 'POST'])
+def mail_readinpage(id):
+    if "token" not in session and "token" not in request.form:
+        return jsonify({"status": 401, "data": "Not logged in"}), 401
+
+    token = session['token'] if "token" in session else str(
+        request.form['token'])
+    if "userId" in session:
+        user_id = session['userId']
+    elif "userId" in request.form:
+        user_id = str(request.form['userId'])
+    else:
+        return jsonify({"status": 401, "data": "Invalid userId"}), 401
+
+    if "accountType" in session:
+        account_type = session['accountType']
+    elif "accountType" in request.form:
+        account_type = str(request.form["accountType"])
+    else:
+        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
+
+    response = getMail(token, user_id, (
+        "eleves" if account_type == "Student" else "profs"), id)
+    session["token"] = response['token']
+    return ((base64.b64decode(response["data"]["content"].encode("utf-8")).decode('utf-8')).encode('ascii', 'xmlcharrefreplace').decode("ascii"))
 
 
 @app.route("/mail/send/", methods=['GET', 'POST'])
 def mail_send():
+    if request.method != "POST":
+        return render_template("mail.html")
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
-    token = session['token'] if "token" in session else str(request.form['token'])
+    token = session['token'] if "token" in session else str(
+        json.loads(request.form['token']))
     if "userId" in session:
         user_id = session['userId']
     elif "userId" in request.form:
-        user_id = str(request.form['userId'])
+        user_id = json.loads(request.form['userId'])
     else:
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
 
     if "accountType" in session:
         account_type = session['accountType']
     elif "accountType" in request.form:
-        account_type = str(request.form["accountType"])
+        account_type = json.loads(request.form["accountType"])
     else:
         return jsonify({"status": 401, "data": "Invalid accountType"}), 401
-    
-    subject = request.form['subject'] if "subject" in request.form else None
-    content = request.form['content'] if "content" in request.form else None
-    to = request.form['to'] if "to" in request.form else None
-    
-    response = getMail(token, user_id, (
+
+    subject = json.loads(request.form['subject']) if "subject" in request.form else None
+    content = json.loads(request.form['content']) if "content" in request.form else None
+    to = [json.loads(request.form['to'])] if "to" in request.form else None
+    response = sendMail(token, user_id, (
         "eleves" if account_type == "Student" else "profs"), subject, content, to)
+
     session["token"] = response['token']
-    return(jsonify(response))
+    return (jsonify(response))
+
 
 @app.route("/mail/dest/", methods=["GET", "POST"])
 def mail_dest():
@@ -368,6 +415,8 @@ def workspaces():
     pass
 
 ### RESTE ###
+
+
 @app.after_request
 def add_header(response):
     response.headers["Access-Control-Allow-Origin"] = request.headers.get(

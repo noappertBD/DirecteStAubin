@@ -41,17 +41,16 @@ class Course:
 version = "4.33.1"
 
 headers = {
-    'authority': 'api.ecoledirecte.com',
-    'accept': 'application/json, text/plain, */*',
-    'accept-language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
-    'content-type': 'application/x-www-form-urlencoded',
-    'origin': 'https://www.ecoledirecte.com',
-    'referer': 'https://www.ecoledirecte.com/',
-    'sec-fetch-dest': 'empty',
-    'sec-fetch-mode': 'cors',
-    'sec-fetch-site': 'same-site',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.5249.119 Safari/537.36',
-    'x-token': '',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.5672.127 Safari/537.36',
+    'Accept': 'application/json, text/plain, */*',
+    'Accept-Language': 'fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3',
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Origin': 'https://www.ecoledirecte.com',
+    'Connection': 'keep-alive',
+    'Referer': 'https://www.ecoledirecte.com/',
+    'Sec-Fetch-Dest': 'empty',
+    'Sec-Fetch-Mode': 'cors',
+    'Sec-Fetch-Site': 'same-site',
 }
 
 
@@ -64,9 +63,10 @@ def makePost(url, data, params=None, headers=headers):
 
 
 def getLoginInfo(username, password):
+    newHeaders = headers.copy()
     data = {"uuid": "", "identifiant": urllib.parse.quote(
         username), "motdepasse": urllib.parse.quote(password), "isReLogin": False}
-    return makePost('https://api.ecoledirecte.com/v3/login.awp', data)
+    return makePost('https://api.ecoledirecte.com/v3/login.awp', data, params=None, headers=newHeaders)
 
 
 def getHomework(token, userId, date):
@@ -220,7 +220,11 @@ def getMail(token, userId, accountType, id):
     response = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/messages/{id}.awp', {
                         "anneeScolaire": ""}, params, headers=newHeaders)
     data = response.json()
+    print(data)
     token = data["token"]
+    if data["code"] != 200:
+        data = data["message"]
+        return {"status": 550, "data": data, "token": token}
     data = data["data"]
     return {"status": 200, "data": data, "token": token}
 
@@ -236,7 +240,7 @@ def sendMail(token, userId, accountType, subject, content, to):
     data = {
         "message": {
             "subject": subject,
-            "content": base64.b64encode(content.encode('ascii')).decode("ascii"),
+            "content": base64.b64encode(content.encode('ascii', 'xmlcharrefreplace')).decode("ascii"),
             "groupesDestinataires": [
                 {
                     "destinataires": to,
@@ -247,21 +251,21 @@ def sendMail(token, userId, accountType, subject, content, to):
             ],
             "transfertFiles": [],
             "files": [],
-            "date": datetime.datetime.now().replace(microsecond=0),
-            "read": true,
+            "date": str(datetime.datetime.now().replace(microsecond=0)),
+            "read": True,
             "from": {
                 "role": accountType,
                 "id": userId,
-                "read": true
+                "read": True
             },
-            "brouillon": false
+            "brouillon": False
         },
         "anneeMessages": ""
     }
 
-    response = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/messages.awp', {
-                        "anneeScolaire": ""}, params, headers=newHeaders, data=data)
-    
+    response = makePost(
+        f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/messages.awp', data=data, params=params, headers=newHeaders)
+
     data = response.json()
     token = data["token"]
     data = data["data"]
