@@ -38,19 +38,19 @@ class Course:
         }
 
 
-version = "4.33.1"
+version = "4.34.0"
 
 headers = {
+    'authority': 'api.ecoledirecte.com',
+    'accept': 'application/json, text/plain, */*',
+    'accept-language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
+    'content-type': 'application/x-www-form-urlencoded',
+    'origin': 'https://www.ecoledirecte.com',
+    'referer': 'https://www.ecoledirecte.com/',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'same-site',
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.5672.127 Safari/537.36',
-    'Accept': 'application/json, text/plain, */*',
-    'Accept-Language': 'fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3',
-    'Content-Type': 'application/x-www-form-urlencoded',
-    'Origin': 'https://www.ecoledirecte.com',
-    'Connection': 'keep-alive',
-    'Referer': 'https://www.ecoledirecte.com/',
-    'Sec-Fetch-Dest': 'empty',
-    'Sec-Fetch-Mode': 'cors',
-    'Sec-Fetch-Site': 'same-site',
 }
 
 
@@ -59,7 +59,7 @@ def makePost(url, data, params=None, headers=headers):
         params = {'v': version}
     params = params
     data = f'data={json.dumps(data)}'
-    return requests.post(url, params=params, headers=headers, data=data)
+    return json.loads(requests.post(url, params=params, headers=headers, data=data).content.decode('utf-8'))
 
 
 def getLoginInfo(username, password):
@@ -105,7 +105,7 @@ def getSchedule(token, userId, accountType, date=None):
     print(
         f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/emploidutemps.awp')
     result = makePost(
-        f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/emploidutemps.awp', data, params, newHeaders).json()
+        f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/emploidutemps.awp', data, params, newHeaders)
     token = result["token"]
     result = result["data"]
     courses = {}
@@ -134,9 +134,8 @@ def getGrades(token, userId, accountType):
     newHeaders['x-token'] = token
     response = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/notes.awp', {
                         "anneeScolaire": ""}, params={"verbe": "get", "v": version}, headers=newHeaders)
-    data = response.json()
-    token = data["token"]
-    data = data["data"]
+    token = response["token"]
+    data = response["data"]
     raw_grades = data["notes"]
     raw_periods = data["periodes"]
 
@@ -178,9 +177,8 @@ def getViescolaire(token, userId, accountType):
     newHeaders['x-token'] = token
     response = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/viescolaire.awp', {
                         "anneeScolaire": ""}, params={"verbe": "get", "v": version}, headers=newHeaders)
-    data = response.json()
-    token = data["token"]
-    data = data["data"]
+    token = response["token"]
+    data = response["data"]
     return {"status": 200, "data": data, "token": token}
 
 
@@ -203,9 +201,8 @@ def getMails(token, userId, accountType, query, classeur):
     }
     response = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/messages.awp', {
                         "anneeScolaire": ""}, params, headers=newHeaders)
-    data = response.json()
-    token = data["token"]
-    data = data["data"]
+    token = response["token"]
+    data = response["data"]
     return {"status": 200, "data": data, "token": token}
 
 
@@ -219,13 +216,11 @@ def getMail(token, userId, accountType, id):
     }
     response = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/messages/{id}.awp', {
                         "anneeScolaire": ""}, params, headers=newHeaders)
-    data = response.json()
-    print(data)
-    token = data["token"]
-    if data["code"] != 200:
-        data = data["message"]
+    token = response["token"]
+    if response["code"] != 200:
+        data = response["message"]
         return {"status": 550, "data": data, "token": token}
-    data = data["data"]
+    data = response["data"]
     return {"status": 200, "data": data, "token": token}
 
 
@@ -266,7 +261,27 @@ def sendMail(token, userId, accountType, subject, content, to):
     response = makePost(
         f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/messages.awp', data=data, params=params, headers=newHeaders)
 
-    data = response.json()
-    token = data["token"]
-    data = data["data"]
+    token = response["token"]
+    data = response["data"]
+    print(data)
+    return {"status": 200, "data": data, "token": token}
+
+def getWorkspaces(token, userId, accountType):
+    newHeaders = headers.copy()
+    newHeaders['x-token'] = 'fce355ba-b69c-4ea8-90fb-08806cf7cfc3'
+    params = {
+        'verbe': 'get',
+        'v': version,
+    }
+    response = makePost(f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/espacestravail.awp', {}, params, headers=newHeaders)
+    token = response["token"]
+    data = response["data"]
+    data_temp = data.copy()
+    print(len(data))
+    data = [
+        data_temp[i]
+        for i in range(len(data_temp))
+        if data_temp[i]["estMembre"] == True
+    ]
+    print(len(data))
     return {"status": 200, "data": data, "token": token}

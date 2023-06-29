@@ -9,7 +9,7 @@
 
 from app.db import Users
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
-from app.edrequests import getLoginInfo, getHomework, getSchedule, getGrades, getViescolaire, getMails, getMail, sendMail
+from app.edrequests import getLoginInfo, getHomework, getSchedule, getGrades, getViescolaire, getMails, getMail, sendMail, getWorkspaces
 import base64
 import json
 
@@ -30,9 +30,9 @@ def login():
     username = str(request.form['username'])
     password = str(request.form['password'])
     loginResponse = getLoginInfo(username, password)
-    if loginResponse.json().get("code") != 200:
+    if loginResponse.get("code") != 200:
         return jsonify({"code": "401", "message": "Invalid credentials"}), 401
-    account = loginResponse.json().get("data").get("accounts")[0]
+    account = loginResponse.get("data").get("accounts")[0]
     id_key = account.get("id")
     loginId = account.get("idLogin")
     firstName = account.get("prenom")
@@ -50,8 +50,8 @@ def login():
         Users(discriminentId=discriminentId, firstName=firstName,
               lastName=lastName, classLevel=classLevel)
     session["userId"] = id_key
-    session["token"] = loginResponse.json().get("token")
-    return jsonify(loginResponse.json())
+    session["token"] = loginResponse.get("token")
+    return jsonify(loginResponse)
 
 
 ### PROFILE ###
@@ -87,8 +87,8 @@ def homework():
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
 
     homeworkResponse = getHomework(token, user_id, None)
-    session["token"] = homeworkResponse.json().get("token")
-    return jsonify({"status": 200, "data": homeworkResponse.json()})
+    session["token"] = homeworkResponse.get("token")
+    return jsonify({"status": 200, "data": homeworkResponse})
 
 
 ### EMPLOI DU TEMPS ###
@@ -368,7 +368,7 @@ def mail_readinpage(id):
 @app.route("/mail/send/", methods=['GET', 'POST'])
 def mail_send():
     if request.method != "POST":
-        return render_template("mail.html")
+        return jsonify({"status": 405, "data": "Use method: POST"}), 401
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
@@ -412,7 +412,29 @@ def cloud():
 ### ESPACES DE TRAVAIL ###
 @app.route("/workspaces/")
 def workspaces():
-    pass
+    if "token" not in session and "token" not in request.form:
+        return jsonify({"status": 401, "data": "Not logged in"}), 401
+
+    token = session['token'] if "token" in session else str(
+        request.form['token'])
+    if "userId" in session:
+        user_id = session['userId']
+    elif "userId" in request.form:
+        user_id = str(request.form['userId'])
+    else:
+        return jsonify({"status": 401, "data": "Invalid userId"}), 401
+
+    if "accountType" in session:
+        account_type = session['accountType']
+    elif "accountType" in request.form:
+        account_type = str(request.form["accountType"])
+    else:
+        return jsonify({"status": 401, "data": "Invalid accountType"}), 401
+    
+    response = getWorkspaces(token, user_id, (
+        "E" if account_type == "Student" else "P"))
+    session["token"] = response['token']
+    return (jsonify(response))
 
 ### RESTE ###
 
@@ -427,4 +449,4 @@ def add_header(response):
     return response
 
 
-app.run(port=8000, host="0.0.0.0", threaded=True, debug=False)
+app.run(port=8000, host="0.0.0.0", threaded=True, debug=True)

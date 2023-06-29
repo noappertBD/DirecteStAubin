@@ -1,6 +1,6 @@
 # DirecteSaintAubin API
 
-![Logo DSA](https://cdn.discordapp.com/attachments/1048574687304744982/1119886992717664306/API.png)
+![Logo DSA](https://media.discordapp.net/attachments/1048574687304744982/1124075010307403896/API.png)
 
 ## Directe Saint Aubin
 
@@ -24,6 +24,6 @@ curl -X POST -d "username=[*nomdutilisateur]&password=[*motdepasse]" http://[*ho
 | Vie scolaire | OK |
 | Devoirs | OK |
 | Notes | OK |
-| Messagerie | En cours |
-| Espaces de travail | PAS OK |
+| Messagerie | OK |
+| Espaces de travail | En cours |
 | Cloud | PAS OK |
