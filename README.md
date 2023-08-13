@@ -25,5 +25,5 @@ curl -X POST -d "username=[*nomdutilisateur]&password=[*motdepasse]" http://[*ho
 | Devoirs | OK |
 | Notes | OK |
 | Messagerie | OK |
-| Espaces de travail | En cours |
+| Espaces de travail | En pause (vacances) |
 | Cloud | PAS OK |
