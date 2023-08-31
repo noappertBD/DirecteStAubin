@@ -22,7 +22,7 @@ app.config.update(
 )
 
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['GET', 'POST'])
 def index():
     return redirect("login")
 
