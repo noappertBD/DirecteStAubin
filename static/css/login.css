@@ -63,7 +63,7 @@ input.help {
     padding: 0;
     margin: 0;
     border-style: none;
-    border-radius: 5px;
+    border-radius: 15px;
     box-sizing: border-box;
     background-color: #4f566115;
     cursor: pointer;
@@ -78,7 +78,7 @@ input.button {
     border-style: solid;
     border-width: 3px;
     border-color: orangered;
-    border-radius: 5px;
+    border-radius: 15px;
     box-sizing: border-box;
     background-color: orangered;
     color: #FFFFFF;
