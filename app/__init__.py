@@ -26,6 +26,10 @@ app.config.update(
 def index():
     return redirect("login")
 
+@app.route('/github/', methods=['GET', 'POST'])
+def github():
+    return redirect("https://github.com/aleod72/DirecteStAubin")
+
 ### LOGIN ###
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
@@ -453,4 +457,4 @@ def add_header(response):
     return response
 
 
-app.run(port=8000, host="0.0.0.0", threaded=True, debug=False)
+app.run(port=8000, host="0.0.0.0", threaded=True, debug=True)

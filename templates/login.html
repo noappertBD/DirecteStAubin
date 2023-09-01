@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" />
     <title>TEST</title>
 </head>
+
 <body>
     <form method="post">
-        <!-- username password POST -->
-        <input type="text" name="username" placeholder="username" />
-        <input type="password" name="password" placeholder="password" />
-        <input type="submit" value="Submit" />
+        <div class="login">
+            <!-- username password POST -->
+            <input spellcheck="false" class="text" type="text" name="username" placeholder="nom d'utilisateur" required/>
+            <input spellcheck="false" class="text" type="password" name="password" placeholder="mot de passe" required/>
+            <div class="buttons">
+                <input class="help" type="button" value="Aide" onclick="window.location.href='{{ url_for('github') }}'"/>
+                <input class="button" type="submit" value="Se connecter" />
+            </div>
+        </div>
     </form>
 </body>
+
 </html>
