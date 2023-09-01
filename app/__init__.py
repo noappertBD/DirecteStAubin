@@ -45,8 +45,11 @@ def login():
     loginId = account.get("idLogin")
     firstName = account.get("prenom")
     lastName = account.get("nom")
-    if ("classe" in account.get("profile")):
-        classLevel = account.get("profile").get("classe").get("code")
+    if ("typeCompte" in account == "E"):
+        if ("class" in account.get("profile")):
+            classLevel = account.get("profile").get("classe").get("code")
+        else:
+            classLevel = "unknown"
         session["accountType"] = "Student"
     else:
         classLevel = "Teacher"
