@@ -65,7 +65,7 @@ input.help {
     border-style: none;
     border-radius: 5px;
     box-sizing: border-box;
-    background-color: #FFFFFF00;
+    background-color: #4f566115;
     cursor: pointer;
 }
 
@@ -87,7 +87,7 @@ input.button {
 }
 
 input.help:hover {
-    background-color: #4f566115;
+    background-color: #4f566130;
     font-weight: bold
 }
 
