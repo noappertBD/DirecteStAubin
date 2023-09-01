@@ -5,6 +5,14 @@
     transition: 0.3s ease-in-out;
 }
 
+p {
+    margin: 0;
+    padding: 0;
+    align-self: flex-start;
+    margin-left: 2px;
+    font-weight: bold;
+}
+
 form {
     display: flex;
     flex-direction: column;
@@ -16,6 +24,16 @@ form {
     bottom: 0;
     left: 0;
     background-color: rgb(118, 129, 144);
+}
+
+div.banner {
+    width: 300px;
+    height: 75px;
+    border-radius: 10px;
+    background-image: url('../img/banner.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-bottom: 10px;
 }
 
 div.login {
@@ -52,7 +70,7 @@ input.text {
 
 input.text:focus {
     border-width: 0 0 5px;
-    border-color: orangered;
+    border-color: #FF4500;
     font-weight: bold
   }
 
@@ -77,10 +95,10 @@ input.button {
     margin: 0;
     border-style: solid;
     border-width: 3px;
-    border-color: orangered;
+    border-color: #FF4500;
     border-radius: 15px;
     box-sizing: border-box;
-    background-color: orangered;
+    background-color: #FF4500;
     color: #FFFFFF;
     cursor: pointer;
     
@@ -92,7 +110,7 @@ input.help:hover {
 }
 
 input.button:hover {
-    color: orangered;
+    color: #FF4500;
     background-color: #FFFFFF;
     font-weight: bold
 }
