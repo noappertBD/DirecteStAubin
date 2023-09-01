@@ -45,7 +45,7 @@ def login():
     loginId = account.get("idLogin")
     firstName = account.get("prenom")
     lastName = account.get("nom")
-    if ("typeCompte" in account == "E"):
+    if ("typeCompte" in account) == "E":
         if ("class" in account.get("profile")):
             classLevel = account.get("profile").get("classe").get("code")
         else:
