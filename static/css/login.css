@@ -55,7 +55,7 @@ div.buttons {
 }
 
 input.text {
-    height: 30px;
+    height: 35px;
     width: 300px;
     padding: 0;
     margin: 0;
@@ -106,7 +106,6 @@ input.button {
 
 input.help:hover {
     background-color: #4f566130;
-    font-weight: bold
 }
 
 input.button:hover {
