@@ -1,6 +1,6 @@
 # DirecteSaintAubin API
 
-![Logo DSA](https://media.discordapp.net/attachments/1048574687304744982/1124075010307403896/API.png)
+![Logo DSA](https://cdn.discordapp.com/attachments/1124328411595288576/1149778551827079268/yWkUEnU.png)
 
 ## Directe Saint Aubin
 
