@@ -70,7 +70,7 @@ input.text {
 
 input.text:focus {
     border-width: 0 0 5px;
-    border-color: #FF4500;
+    border-color: #b14b4b;
     font-weight: bold
   }
 
@@ -95,10 +95,10 @@ input.button {
     margin: 0;
     border-style: solid;
     border-width: 3px;
-    border-color: #FF4500;
+    border-color: #b14b4b;
     border-radius: 15px;
     box-sizing: border-box;
-    background-color: #FF4500;
+    background-color: #b14b4b;
     color: #FFFFFF;
     cursor: pointer;
     
@@ -109,7 +109,7 @@ input.help:hover {
 }
 
 input.button:hover {
-    color: #FF4500;
+    color: #b14b4b;
     background-color: #FFFFFF;
     font-weight: bold
 }
