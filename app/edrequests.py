@@ -231,7 +231,6 @@ def sendMail(token, userId, accountType, subject, content, to):
         'verbe': 'post',
         'v': version,
     }
-
     data = {
         "message": {
             "subject": subject,
