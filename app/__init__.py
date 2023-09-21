@@ -503,4 +503,4 @@ def add_header(response):
     return response
 
 
-app.run(port=8000, host="0.0.0.0", threaded=True, debug=False, ssl_context="adhoc")
+app.run(port=8000, host="0.0.0.0", threaded=True, debug=False)
