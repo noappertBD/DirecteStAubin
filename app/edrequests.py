@@ -237,7 +237,7 @@ def sendMail(token, userId, accountType, subject, content, to):
             "content": base64.b64encode(content.encode('ascii', 'xmlcharrefreplace')).decode("ascii"),
             "groupesDestinataires": [
                 {
-                    "destinataires": to,
+                    "destinataires": json.loads(to[0]),
                     "selection": {
                         "type": "W"
                     }
@@ -249,7 +249,7 @@ def sendMail(token, userId, accountType, subject, content, to):
             "read": True,
             "from": {
                 "role": accountType,
-                "id": userId,
+                "id": int(userId),
                 "read": True
             },
             "brouillon": False
@@ -261,9 +261,9 @@ def sendMail(token, userId, accountType, subject, content, to):
         f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/messages.awp', data=data, params=params, headers=newHeaders)
 
     token = response["token"]
-    data = response["data"]
-    print(data)
-    return {"status": 200, "data": data, "token": token}
+    datar = response
+    print(datar)
+    return {"status": 200, "data": datar, "token": token}
 
 def getWorkspaces(token, userId, accountType):
     newHeaders = headers.copy()

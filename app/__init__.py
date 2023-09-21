@@ -417,30 +417,30 @@ def mail_send():
     token = (
         session["token"]
         if "token" in session
-        else str(json.loads(request.form["token"]))
+        else request.form["token"]
     )
     if "userId" in session:
         user_id = session["userId"]
     elif "userId" in request.form:
-        user_id = json.loads(request.form["userId"])
+        user_id = request.form["userId"]
     else:
         return jsonify({"status": 401, "data": "Invalid userId"}), 401
 
     if "accountType" in session:
         account_type = session["accountType"]
     elif "accountType" in request.form:
-        account_type = json.loads(request.form["accountType"])
+        account_type = request.form["accountType"]
     else:
         return jsonify({"status": 401, "data": "Invalid accountType"}), 401
 
-    subject = json.loads(request.form["subject"]) if "subject" in request.form else None
-    content = json.loads(request.form["content"]) if "content" in request.form else None
-    to = [json.loads(request.form["to"])] if "to" in request.form else None
+    subject = request.form["subject"] if "subject" in request.form else None
+    content = request.form["content"] if "content" in request.form else None
+    to = [request.form["to"]] if "to" in request.form else None
     print(to)
     response = sendMail(
         token,
         user_id,
-        ("eleves" if account_type == "Student" else "profs"),
+        ("E" if account_type == "Student" else "profs"),
         subject,
         content,
         to,
@@ -503,4 +503,4 @@ def add_header(response):
     return response
 
 
-app.run(port=8000, host="0.0.0.0", threaded=True, debug=False, ssl_context="adhoc")
+app.run(port=8000, host="0.0.0.0", threaded=True, debug=False)
