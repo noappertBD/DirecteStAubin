@@ -38,7 +38,7 @@ class Course:
         }
 
 
-version = "4.34.0"
+version = "4.39.1"
 
 headers = {
     'authority': 'api.ecoledirecte.com',
