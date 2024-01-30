@@ -38,7 +38,7 @@ class Course:
         }
 
 
-version = "4.39.1"
+version = "4.49.0"
 
 headers = {
     'authority': 'api.ecoledirecte.com',
@@ -237,7 +237,7 @@ def sendMail(token, userId, accountType, subject, content, to):
             "content": base64.b64encode(content.encode('ascii', 'xmlcharrefreplace')).decode("ascii"),
             "groupesDestinataires": [
                 {
-                    "destinataires": json.loads(to[0]),
+                    "destinataires": [json.loads(to[0])],
                     "selection": {
                         "type": "W"
                     }
@@ -256,6 +256,8 @@ def sendMail(token, userId, accountType, subject, content, to):
         },
         "anneeMessages": ""
     }
+
+    print(data)
 
     response = makePost(
         f'https://api.ecoledirecte.com/v3/{accountType}/{userId}/messages.awp', data=data, params=params, headers=newHeaders)

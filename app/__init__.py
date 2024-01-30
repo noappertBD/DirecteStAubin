@@ -410,7 +410,7 @@ def mail_readinpage(id):
 @app.route("/mail/send/", methods=["GET", "POST"])
 def mail_send():
     if request.method != "POST":
-        return jsonify({"status": 405, "data": "Use method: POST"}), 401
+        return render_template("mailsend.html")
     if "token" not in session and "token" not in request.form:
         return jsonify({"status": 401, "data": "Not logged in"}), 401
 
@@ -435,12 +435,13 @@ def mail_send():
 
     subject = request.form["subject"] if "subject" in request.form else None
     content = request.form["content"] if "content" in request.form else None
-    to = [request.form["to"]] if "to" in request.form else None
+    to = '{"type": "E", "id": %s, "isPP": false, "isSelected": true, "to_cc_cci": "to"}' % request.form["to"] if "to" in request.form else None
+    to = [to]
     print(to)
     response = sendMail(
         token,
         user_id,
-        ("E" if account_type == "Student" else "profs"),
+        ("eleves" if account_type == "Student" else "profs"),
         subject,
         content,
         to,

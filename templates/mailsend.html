@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" />
+    <title>DirecteSAAPI Login</title>
+</head>
+
+<body>
+    <form method="post">
+        <div class="login">
+            <div class="banner"></div>
+            <!-- username password POST -->
+            <p>Se connecter à l'api :</p>
+            <input spellcheck="false" class="text" type="text" name="subject" placeholder="Objet" required/>
+            <input spellcheck="false" class="text" type="text" name="content" placeholder="Message" required/>
+            <input spellcheck="false" class="text" type="text" name="to" placeholder="Pour" required/>
+
+            <div class="buttons">
+                <input class="help" type="button" value="Aide" onclick="window.location.href=`{{ url_for('github') }}`"/>
+                <input class="button" type="submit" value="Envoyer" />
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>
