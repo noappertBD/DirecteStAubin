@@ -1,6 +1,8 @@
 # DirecteSaintAubin API
 
-![Logo DSA](https://github.com/noappertBD/DirecteStAubin/blob/main/static/img/banner.png)
+<div style="border-radius: 15px;">
+![Logo DSA](https://raw.githubusercontent.com/noappertBD/DirecteStAubin/main/static/img/banner.png)
+</div>
 
 ## Directe Saint Aubin
 
