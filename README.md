@@ -1,6 +1,6 @@
 # DirecteSaintAubin API
 
-<img style="border-radius: 15px;" src="https://raw.githubusercontent.com/noappertBD/DirecteStAubin/main/static/img/banner.png" />
+![](https://raw.githubusercontent.com/noappertBD/DirecteStAubin/main/static/img/banner.png)
 
 ## Directe Saint Aubin
 
