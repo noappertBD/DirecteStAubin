@@ -39,7 +39,8 @@ def login():
     password = str(request.form["password"])
     loginResponse = getLoginInfo(username, password)
     if loginResponse.get("code") != 200:
-        return jsonify({"code": "401", "message": "Invalid credentials"}), 401
+        # return jsonify({"code": "401", "message": "Invalid credentials"}), 401
+        return jsonify(loginResponse)
     account = loginResponse.get("data").get("accounts")[0]
     id_key = account.get("id")
     loginId = account.get("idLogin")
