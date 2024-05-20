@@ -405,7 +405,7 @@ def mail_readinpage(id):
         (base64.b64decode(response["data"]["content"].encode("utf-8")).decode("utf-8"))
         .encode("ascii", "xmlcharrefreplace")
         .decode("ascii")
-    )
+    )+"<style>@import url('https://fonts.googleapis.com/css2?family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap');*{font-family: 'Reddit Sans', sans-serif;}</style>"
 
 
 @app.route("/mail/send/", methods=["GET", "POST"])
